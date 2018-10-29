@@ -9,6 +9,20 @@ class ExtendActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView( R.layout.extend )
+
+//        根据MainActivity的传参决定渲染哪个功能
+        val choose = this.intent.getIntExtra( "choose", 0 )
+        when( choose ) {
+            0 -> {
+                drawFavour()
+            }
+            1 -> {
+                drawHistory()
+            }
+            2 -> {
+                drawLocal()
+            }
+        }
     }
 
 //    获取历史记录的数据，并渲染在Activity中

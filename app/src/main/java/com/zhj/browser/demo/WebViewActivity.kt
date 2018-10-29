@@ -6,7 +6,8 @@ import com.tencent.smtt.sdk.QbSdk
 import com.tencent.smtt.sdk.WebView
 import com.zhj.browser.R
 
-class MainActivity : Activity() {
+//TSB的demo
+class WebViewActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
