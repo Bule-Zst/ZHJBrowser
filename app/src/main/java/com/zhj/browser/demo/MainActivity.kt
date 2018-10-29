@@ -1,15 +1,20 @@
-package com.zhj.browser
+package com.zhj.browser.demo
 
 import android.app.Activity
 import android.os.Bundle
 import com.tencent.smtt.sdk.QbSdk
 import com.tencent.smtt.sdk.WebView
+import com.zhj.browser.R
 
 class MainActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.demo)
 
+        // 初始化X5内核
+        QbSdk.initX5Environment( this, null )
+
+        findViewById<WebView>( R.id.web_view ).loadUrl( "http://www.baidu.com" )
     }
 }
