@@ -22,4 +22,7 @@ interface ItemDao {
 //    获取全部数据
     @Query( "select * from item order by id" )
     fun queryAll() : Array<Item>
+
+    @Query( "select * from item where category = :category order by id desc " )
+    fun queryByCategory( category: Int ) : Array<Item>
 }
