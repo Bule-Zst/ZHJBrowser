@@ -3,14 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.zhj.browser">
 
-    <!--腾讯内核的权限-->
+    <!-- 腾讯内核的权限 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <!---->
 
+    <!--  -->
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -20,16 +20,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".MainActivity">
+        <activity android:name=".ui.activity.MainActivity"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
-        <activity android:name=".demo.WebViewActivity">
-
-        </activity>
-        <activity android:name=".database.TestActivity">
-
-        </activity>
-        <activity android:name=".extend.ExtendActivity">
+        <activity android:name=".demo.WebViewActivity" />
+        <activity android:name=".database.TestActivity" />
+        <activity android:name=".ui.activity.FavActivity"
+            android:theme="@style/AppTheme.FullScreen"
+            android:label="数据库测试">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
