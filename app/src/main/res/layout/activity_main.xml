@@ -1,11 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    tools:context=".ui.activity.MainActivity">
 
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_margin="8dp"
+            android:gravity="center_vertical"
+            app:layout_scrollFlags="scroll|enterAlways"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-</LinearLayout>
+            <EditText
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:hint="start search here"
+                android:background="@color/white"
+                android:elevation="6dp"
+                android:padding="8dp"
+                android:textSize="16sp"
+                android:layout_height="wrap_content" />
+
+            <ImageView
+                android:padding="4dp"
+                android:src="@drawable/ic_sync"
+                android:tint="@color/white"
+                android:layout_marginLeft="4dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp" />
+        </LinearLayout>
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:id="@+id/webViewContainer"
+        android:layout_marginBottom="48dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/testTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </android.support.v4.widget.NestedScrollView>
+
+    <LinearLayout
+        android:layout_gravity="bottom"
+        android:id="@+id/mainMenuContainer"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="48dp">
+
+        <android.support.v7.widget.AppCompatImageView
+            android:src="@drawable/ic_chevron_left"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:padding="8dp"
+            android:background="?attr/selectableItemBackground"
+            android:layout_height="match_parent" />
+        <android.support.v7.widget.AppCompatImageView
+            android:src="@drawable/ic_chevron_right"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:padding="8dp"
+            android:background="?attr/selectableItemBackground"
+            android:layout_height="match_parent" />
+        <android.support.v7.widget.AppCompatImageView
+            android:src="@drawable/ic_menu"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:padding="8dp"
+            android:background="?attr/selectableItemBackground"
+            android:layout_height="match_parent" />
+        <android.support.v7.widget.AppCompatImageView
+            android:src="@drawable/ic_home"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:padding="8dp"
+            android:background="?attr/selectableItemBackground"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>
