@@ -22,4 +22,5 @@ interface ItemDao {
 //    获取全部数据
     @Query( "select * from item order by id" )
     fun queryAll() : Array<Item>
+
 }
