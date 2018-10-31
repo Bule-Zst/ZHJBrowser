@@ -12,7 +12,7 @@ abstract class AppDatabase : RoomDatabase() {
     companion object {
 //        获取实例
         fun getInstance() : AppDatabase {
-            return Room.databaseBuilder( App.instant, AppDatabase::class.java, "zhj.db" ).allowMainThreadQueries().build()
+            return Room.databaseBuilder( App.instance, AppDatabase::class.java, "zhj.db" ).allowMainThreadQueries().build()
         }
 
         fun<T> withAppDatabase( f: ( app: AppDatabase ) -> T ) {

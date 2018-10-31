@@ -15,5 +15,5 @@ class TestActivity : Activity() {
 }
 
 fun toast( msg: String ) {
-    Toast.makeText( App.instant, msg, Toast.LENGTH_LONG ).show()
+    Toast.makeText( App.instance, msg, Toast.LENGTH_LONG ).show()
 }

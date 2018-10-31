@@ -28,7 +28,7 @@ object BitmapTool {
      * @return
      */
     fun saveBitmap(mBitmap: Bitmap): String? {
-        var savePath: String = App.instant.filesDir.absolutePath + IN_PATH
+        var savePath: String = App.instance.filesDir.absolutePath + IN_PATH
         var filePic: File
         try {
             filePic = File(savePath + generateFileName() + ".jpg")

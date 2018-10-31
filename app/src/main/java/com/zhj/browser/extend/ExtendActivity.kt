@@ -7,7 +7,6 @@ import com.zhj.browser.database.AppDatabase
 import com.zhj.browser.database.Item
 import com.zhj.browser.database.toMsg
 import com.zhj.browser.database.toast
-import com.zhj.browser.debug
 
 //收藏夹、历史记录、本地保存都共用一个Activity
 class ExtendActivity : Activity() {
@@ -37,7 +36,6 @@ class ExtendActivity : Activity() {
         val list = db.getDao().queryByCategory( Item.HISTORY )
         db.close()
 //        开始渲染
-        debug( list.toMsg() )
         toast( list.toMsg() )
     }
     fun drawFavour() {

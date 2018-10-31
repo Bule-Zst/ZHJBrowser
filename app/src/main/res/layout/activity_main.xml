@@ -2,6 +2,7 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainActivityLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.activity.MainActivity">
@@ -42,12 +43,7 @@
         android:id="@+id/webViewContainer"
         android:layout_marginBottom="48dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <TextView
-            android:id="@+id/testTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </android.support.v4.widget.NestedScrollView>
+        android:layout_height="match_parent" />
 
     <LinearLayout
         android:layout_gravity="bottom"
@@ -61,6 +57,8 @@
             android:layout_weight="1"
             android:layout_width="0dp"
             android:padding="8dp"
+            android:focusable="true"
+            android:clickable="true"
             android:background="?attr/selectableItemBackground"
             android:layout_height="match_parent" />
         <android.support.v7.widget.AppCompatImageView
@@ -68,13 +66,18 @@
             android:layout_weight="1"
             android:layout_width="0dp"
             android:padding="8dp"
+            android:focusable="true"
+            android:clickable="true"
             android:background="?attr/selectableItemBackground"
             android:layout_height="match_parent" />
         <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/toolMenu"
             android:src="@drawable/ic_menu"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:padding="8dp"
+            android:focusable="true"
+            android:clickable="true"
             android:background="?attr/selectableItemBackground"
             android:layout_height="match_parent" />
         <android.support.v7.widget.AppCompatImageView
@@ -82,6 +85,8 @@
             android:layout_weight="1"
             android:layout_width="0dp"
             android:padding="8dp"
+            android:focusable="true"
+            android:clickable="true"
             android:background="?attr/selectableItemBackground"
             android:layout_height="match_parent" />
     </LinearLayout>
