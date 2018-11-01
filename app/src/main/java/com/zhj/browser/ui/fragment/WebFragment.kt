@@ -1,9 +1,11 @@
 package com.zhj.browser.ui.fragment
 
 import android.app.Fragment
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.support.v4.app.FragmentActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,9 +18,12 @@ import com.zhj.browser.database.Item
 import com.zhj.browser.database.toast
 import com.zhj.browser.extend.ExtendActivity
 import com.zhj.browser.tool.BitmapTool
+import com.zhj.browser.ui.viewModel.WebViewModel
 import kotlinx.android.synthetic.main.fragment_web.*
 
 class WebFragment : Fragment(){
+
+    private lateinit var webViewModel: WebViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.fragment_web,container,false)
@@ -26,9 +31,31 @@ class WebFragment : Fragment(){
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        webViewModel = ViewModelProviders.of(activity as FragmentActivity).get(WebViewModel::class.java)
+        startObserve()
         addListen()
 //        mWebView.loadUrl( "https://www.baidu.com/s?ie=UTF-8&wd=android%20%E4%BF%9D%E5%AD%98bitmap" )
         mWebView.loadUrl( "https://www.baidu.com/" )
+    }
+
+    private fun startObserve(){
+        webViewModel.isNoImgMode.observeForever { isNoImgMode : Boolean? ->
+            if(isNoImgMode == null)return@observeForever
+            //操作
+        }
+        webViewModel.action.observeForever { action : String? ->
+            if (action == null) {
+                return@observeForever
+            }
+            when(action){
+                WebViewModel.ACTION_SAVE -> {}
+                WebViewModel.ACTION_SYNC -> {}
+                WebViewModel.ACTION_FAVORITE -> {}
+                WebViewModel.ACTION_BACK -> {}
+                WebViewModel.ACTION_FORWARD -> {}
+                WebViewModel.ACTION_HOME -> {}
+            }
+        }
     }
 
     fun addListen() {

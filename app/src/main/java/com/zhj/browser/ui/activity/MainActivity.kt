@@ -48,10 +48,14 @@ class MainActivity : FragmentActivity() {
 
     private fun loadPreference(){
         isFullScreen = OpenPreference.getBoolean(PreferenceDict.isFullScreen,false)
+        webViewModel.isNoImgMode.value = OpenPreference.getBoolean(PreferenceDict.isNoImgMode,false)
     }
 
     private fun toggleFullScreen(){
         val lp = webViewContainer.layoutParams as CoordinatorLayout.LayoutParams
+        if(isFullScreen){
+
+        }
         lp.bottomMargin = 0
         webViewContainer.layoutParams = lp
     }
@@ -60,11 +64,16 @@ class MainActivity : FragmentActivity() {
         val popToolView = WebToolMenu(this){tag ->
             when(tag){
                 "collection" -> {startActivity<FavActivity>()}
-                "fav" -> {}
+                "fav" -> {webViewModel.action.value = WebViewModel.ACTION_FAVORITE}
                 "fullScreen" -> {toggleFullScreen()}
-                "update" -> {}
-                "save" -> {}
-                "noImage" -> {}
+                "update" -> {webViewModel.action.value = WebViewModel.ACTION_SYNC}
+                "save" -> {webViewModel.action.value = WebViewModel.ACTION_SAVE}
+                "noImage" -> {
+                    var isNoImgMode = webViewModel.isNoImgMode.value?:false
+                    isNoImgMode = !isNoImgMode
+                    OpenPreference.put(PreferenceDict.isNoImgMode,isNoImgMode)
+                    webViewModel.isNoImgMode.value = isNoImgMode
+                }
                 "about" -> {}
                 "exit" -> {System.exit(0)}
             }

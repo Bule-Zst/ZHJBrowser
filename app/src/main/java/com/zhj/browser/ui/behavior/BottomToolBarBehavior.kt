@@ -20,10 +20,11 @@ class BottomToolBarBehavior(c: Context, attrs: AttributeSet) : CoordinatorLayout
         if (oldY == -1f) {
             oldY = dependency.y
         } else if (dependency.y - oldY > 0) {
-            child!!.visibility = View.GONE
-        } else if (dependency.y - oldY < 0) {
             child!!.visibility = View.VISIBLE
+        } else if (dependency.y - oldY < 0) {
+            child!!.visibility = View.GONE
         }
+        oldY = dependency.y
         return true
     }
 }
