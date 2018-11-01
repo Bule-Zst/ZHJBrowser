@@ -4,11 +4,14 @@ import android.app.Fragment
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.graphics.Bitmap
+import android.os.Build
 import android.os.Bundle
+import android.support.annotation.RequiresApi
 import android.support.v4.app.FragmentActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.tencent.smtt.sdk.ValueCallback
 import com.tencent.smtt.sdk.WebView
 import com.tencent.smtt.sdk.WebViewClient
 import com.zhj.browser.App
@@ -119,11 +122,12 @@ class WebFragment : Fragment(){
         }
     }
 
+        @RequiresApi(Build.VERSION_CODES.M)
         fun savepage(){
         val filename:String = mWebView.title
         val url:String = mWebView.url
         val file_path:String = context.filesDir.toString()+"/"+filename+".mnt"
-        mWebView.saveWebArchive(file_path,false, object: ValueCallback<String>(){
+        mWebView.saveWebArchive(file_path,false, object: ValueCallback<String> {
             override fun onReceiveValue(p0: String?) {
                 if(p0==null)
                 {
@@ -136,7 +140,7 @@ class WebFragment : Fragment(){
                             this.bitmapPath = file_path
                             this.title = filename
                             this.url = url
-                            this.category = Item.Local
+                            this.category = Item.LOCAL
                             this
                         })
                     }

@@ -6,7 +6,7 @@ import com.zhj.browser.R
 import com.zhj.browser.database.AppDatabase
 import com.zhj.browser.database.Item
 import com.zhj.browser.database.toMsg
-import com.zhj.browser.database.toast
+import org.jetbrains.anko.toast
 
 //收藏夹、历史记录、本地保存都共用一个Activity
 class ExtendActivity : Activity() {
