@@ -23,7 +23,7 @@ class BookmarkFragment : Fragment(){
         //todo 加载书签
         var itemArray = emptyArray<Item>()
         AppDatabase.withAppDatabase { db ->
-            itemArray = db.getDao().queryByCategory( Item.FAVOUR )
+            itemArray = db.getItemDao().queryByCategory( Item.FAVOUR )
         }
         debug( itemArray.toMsg() )
     }

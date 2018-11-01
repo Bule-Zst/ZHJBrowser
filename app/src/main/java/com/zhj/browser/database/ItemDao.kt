@@ -8,8 +8,9 @@ import android.arch.persistence.room.Query
 @Dao
 interface ItemDao {
 //    插入
+//    返回值为插入的id
     @Insert
-    fun insert(item: Item )
+    fun insert(item: Item ) : Long
 
 //    删除
     @Delete

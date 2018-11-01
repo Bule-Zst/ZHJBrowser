@@ -33,7 +33,7 @@ class ExtendActivity : Activity() {
 //    以下两个draw函数，功能类似
     fun drawHistory() {
         val db = AppDatabase.getInstance()
-        val list = db.getDao().queryByCategory( Item.HISTORY )
+        val list = db.getItemDao().queryByCategory( Item.HISTORY )
         db.close()
 //        开始渲染
         toast( list.toMsg() )
