@@ -15,11 +15,11 @@ import com.zhj.browser.App
 import com.zhj.browser.R
 import com.zhj.browser.database.AppDatabase
 import com.zhj.browser.database.Item
-import com.zhj.browser.database.toast
 import com.zhj.browser.extend.ExtendActivity
 import com.zhj.browser.tool.BitmapTool
 import com.zhj.browser.ui.viewModel.WebViewModel
 import kotlinx.android.synthetic.main.fragment_web.*
+import org.jetbrains.anko.toast
 
 class WebFragment : Fragment(){
 
@@ -34,7 +34,6 @@ class WebFragment : Fragment(){
         webViewModel = ViewModelProviders.of(activity as FragmentActivity).get(WebViewModel::class.java)
         startObserve()
         addListen()
-//        mWebView.loadUrl( "https://www.baidu.com/s?ie=UTF-8&wd=android%20%E4%BF%9D%E5%AD%98bitmap" )
         mWebView.loadUrl( "https://www.baidu.com/" )
     }
 
@@ -99,16 +98,18 @@ class WebFragment : Fragment(){
         }
     }
 
-    //    跳转到扩展页面（收藏夹、历史记录、本地保存）
-//    需要指定跳转到哪一个，0表示收藏夹、1表示历史记录、2表示本地保存。关键词：choose
-    fun moveToExtendActivity( view: View ) {
-        val viewId = view.id
-//        根据id获取组件，根据组件名称，决定跳转到收藏夹还是历史记录还是本地保存
-
-    }
-    fun moveToExtendActivity(choose: Int) {
-        val intent = Intent( App.instance, ExtendActivity::class.java )
-        intent.putExtra( "choose", choose )
-        startActivity( intent )
+    private fun addBookMark() {
+        AppDatabase.withAppDatabase { db ->
+            db.getDao().insert( with( Item.getDefault() ) {
+                this.title = mWebView.title
+                this.url = mWebView.url
+                this.bitmapPath = if( mWebView.favicon == null ) "" else {
+                    BitmapTool.saveBitmap( mWebView.favicon )!!
+                }
+                this.category = Item.FAVOUR
+                this
+            })
+            toast( "add bookmark success" )
+        }
     }
 }
