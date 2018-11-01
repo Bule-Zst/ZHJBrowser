@@ -6,6 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.zhj.browser.R
+import com.zhj.browser.common.debug
+import com.zhj.browser.common.info
+import com.zhj.browser.database.AppDatabase
+import com.zhj.browser.database.Item
+import com.zhj.browser.database.toMsg
 
 class BookmarkFragment : Fragment(){
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -16,5 +21,10 @@ class BookmarkFragment : Fragment(){
 
     private fun loadBookMark() {
         //todo 加载书签
+        var itemArray = emptyArray<Item>()
+        AppDatabase.withAppDatabase { db ->
+            itemArray = db.getDao().queryByCategory( Item.FAVOUR )
+        }
+        debug( itemArray.toMsg() )
     }
 }

@@ -15,6 +15,9 @@ interface ItemDao {
     @Delete
     fun delete(item: Item )
 
+    @Delete
+    fun deleteAll( items: List<Item> )
+
 //    获取最多50条数据
     @Query( "select * from item order by id limit 50" )
     fun queryPart() : Array<Item>
