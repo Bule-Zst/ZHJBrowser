@@ -26,7 +26,8 @@ class WebFragment : Fragment(){
     override fun onAttachFragment(childFragment: Fragment?) {
         super.onAttachFragment(childFragment)
         addListen()
-        mWebView.loadUrl( "https://www.baidu.com/s?ie=UTF-8&wd=android%20%E4%BF%9D%E5%AD%98bitmap" )
+//        mWebView.loadUrl( "https://www.baidu.com/s?ie=UTF-8&wd=android%20%E4%BF%9D%E5%AD%98bitmap" )
+        mWebView.loadUrl( "https://www.baidu.com/" )
     }
 
     fun addListen() {

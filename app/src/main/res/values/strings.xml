@@ -11,4 +11,6 @@
     <string name="bookmark">书签</string>
     <string name="local">本地</string>
     <string name="history">历史</string>
+    <string name="cancle">取消</string>
+    <string name="search_hint">start search here</string>
 </resources>

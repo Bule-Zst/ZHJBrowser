@@ -13,4 +13,9 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
+    <style name="BottomMenuAnim">
+        <item name="android:windowEnterAnimation">@anim/show_up</item>
+        <item name="android:windowExitAnimation">@anim/hide_down</item>
+    </style>
 </resources>

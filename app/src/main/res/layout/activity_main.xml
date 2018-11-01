@@ -11,21 +11,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <LinearLayout
-            android:layout_margin="8dp"
+            android:layout_margin="12dp"
             android:gravity="center_vertical"
             app:layout_scrollFlags="scroll|enterAlways"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <EditText
+            <TextView
+                android:id="@+id/startSearchView"
                 android:layout_weight="1"
                 android:layout_width="0dp"
-                android:hint="start search here"
+                android:hint="@string/search_hint"
                 android:background="@color/white"
                 android:elevation="6dp"
                 android:padding="8dp"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:layout_height="wrap_content" />
 
             <ImageView
@@ -59,7 +60,7 @@
             android:padding="8dp"
             android:focusable="true"
             android:clickable="true"
-            android:background="?attr/selectableItemBackground"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:layout_height="match_parent" />
         <android.support.v7.widget.AppCompatImageView
             android:src="@drawable/ic_chevron_right"
@@ -68,7 +69,7 @@
             android:padding="8dp"
             android:focusable="true"
             android:clickable="true"
-            android:background="?attr/selectableItemBackground"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:layout_height="match_parent" />
         <android.support.v7.widget.AppCompatImageView
             android:id="@+id/toolMenu"
@@ -78,7 +79,7 @@
             android:padding="8dp"
             android:focusable="true"
             android:clickable="true"
-            android:background="?attr/selectableItemBackground"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:layout_height="match_parent" />
         <android.support.v7.widget.AppCompatImageView
             android:src="@drawable/ic_home"
@@ -87,7 +88,7 @@
             android:padding="8dp"
             android:focusable="true"
             android:clickable="true"
-            android:background="?attr/selectableItemBackground"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:layout_height="match_parent" />
     </LinearLayout>
 

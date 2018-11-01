@@ -5,6 +5,8 @@ import android.graphics.drawable.ColorDrawable
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
+import android.view.WindowManager
+import android.widget.ImageView
 import android.widget.PopupWindow
 import com.zhj.browser.R
 import com.zhj.browser.bean.WebToolMenuItem
@@ -12,7 +14,7 @@ import com.zhj.browser.tool.obtainColor
 import com.zhj.browser.ui.adapter.WebToolMenuAdapter
 import org.jetbrains.anko.find
 
-class WebToolMenu(c : Context) : PopupWindow(){
+class WebToolMenu(c : Context, onMenuItemClick : (tag : String)->Unit) : PopupWindow(){
 
     companion object {
         val webToolMenuList = listOf(
@@ -31,10 +33,23 @@ class WebToolMenu(c : Context) : PopupWindow(){
         isOutsideTouchable = true
         isFocusable = true
         setBackgroundDrawable(ColorDrawable(c.obtainColor(R.color.transparent)))
+        width = WindowManager.LayoutParams.MATCH_PARENT
+        height = WindowManager.LayoutParams.WRAP_CONTENT
+        animationStyle = R.style.BottomMenuAnim
+
         val view = LayoutInflater.from(c).inflate(R.layout.popup_menu_web_tool,null)
         val menuListView = view.find<RecyclerView>(R.id.menuListView)
         menuListView.layoutManager = GridLayoutManager(c,4)
-        menuListView.adapter = WebToolMenuAdapter(c, webToolMenuList)
+        val adapter = WebToolMenuAdapter(c, webToolMenuList)
+        adapter.onItemClick = {tag ->
+            onMenuItemClick(tag)
+            dismiss()
+        }
+        menuListView.adapter = adapter
         contentView = view
+
+        view.find<ImageView>(R.id.closeBtn).setOnClickListener {
+            dismiss()
+        }
     }
 }
