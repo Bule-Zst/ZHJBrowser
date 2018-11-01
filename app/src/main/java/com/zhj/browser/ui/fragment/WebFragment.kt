@@ -13,6 +13,7 @@ import com.zhj.browser.App
 import com.zhj.browser.R
 import com.zhj.browser.database.AppDatabase
 import com.zhj.browser.database.Item
+import com.zhj.browser.database.toast
 import com.zhj.browser.extend.ExtendActivity
 import com.zhj.browser.tool.BitmapTool
 import kotlinx.android.synthetic.main.fragment_web.*
@@ -23,8 +24,8 @@ class WebFragment : Fragment(){
         return inflater.inflate(R.layout.fragment_web,container,false)
     }
 
-    override fun onAttachFragment(childFragment: Fragment?) {
-        super.onAttachFragment(childFragment)
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         addListen()
 //        mWebView.loadUrl( "https://www.baidu.com/s?ie=UTF-8&wd=android%20%E4%BF%9D%E5%AD%98bitmap" )
         mWebView.loadUrl( "https://www.baidu.com/" )
