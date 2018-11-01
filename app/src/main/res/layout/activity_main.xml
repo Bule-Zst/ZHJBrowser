@@ -51,6 +51,8 @@
         android:layout_gravity="bottom"
         android:id="@+id/mainMenuContainer"
         android:orientation="horizontal"
+        android:background="@color/white"
+        app:layout_behavior="com.zhj.browser.ui.behavior.BottomToolBarBehavior"
         android:layout_width="match_parent"
         android:layout_height="48dp">
 
