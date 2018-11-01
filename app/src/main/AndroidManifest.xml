@@ -20,7 +20,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ui.activity.MainActivity"
+        <activity
+            android:name=".ui.activity.MainActivity"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,15 +31,17 @@
         </activity>
         <activity android:name=".demo.WebViewActivity" />
         <activity android:name=".database.TestActivity" />
-        <activity android:name=".ui.activity.FavActivity"
-            android:theme="@style/AppTheme.FullScreen"
-            android:label="数据库测试">
+        <activity
+            android:name=".ui.activity.FavActivity"
+            android:label="数据库测试"
+            android:theme="@style/AppTheme.FullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".tttt"></activity>
     </application>
 
 </manifest>
