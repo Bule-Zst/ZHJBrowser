@@ -1,30 +1,34 @@
 package com.zhj.browser.ui.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.zhj.browser.R
-import com.zhj.browser.common.debug
-import com.zhj.browser.common.info
 import com.zhj.browser.database.AppDatabase
 import com.zhj.browser.database.Item
-import com.zhj.browser.database.toMsg
+import com.zhj.browser.ui.activity.MainActivity
+import com.zhj.browser.ui.adapter.BookmarkAdapter
+import kotlinx.android.synthetic.main.fragment_bookmark.*
+import org.jetbrains.anko.intentFor
 
 class BookmarkFragment : Fragment(){
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val view = inflater.inflate(R.layout.fragment_bookmark,container,false)
-        loadBookMark()
         return view
     }
 
-    private fun loadBookMark() {
-        //todo 加载书签
-        var itemArray = emptyArray<Item>()
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         AppDatabase.withAppDatabase { db ->
-            itemArray = db.getDao().queryByCategory( Item.FAVOUR )
+            val itemArray = db.getDao().queryByCategory( Item.FAVOUR )
+            val adapter = BookmarkAdapter(activity!!,itemArray.toMutableList())
+            adapter.onItemClick = {item ->
+                val intent = activity!!.intentFor<MainActivity>("search" to item.url)
+            }
+            bookmarkListView.adapter = adapter
         }
-        debug( itemArray.toMsg() )
     }
 }

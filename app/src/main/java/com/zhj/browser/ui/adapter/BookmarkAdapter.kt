@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.squareup.picasso.Picasso
 import com.zhj.browser.R
+import com.zhj.browser.database.AppDatabase
 import com.zhj.browser.database.Item
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.cancelButton
@@ -17,7 +18,7 @@ import org.jetbrains.anko.yesButton
 
 class BookmarkAdapter(val ctx: Context, val itemList: MutableList<Item>) : RecyclerView.Adapter<BookmarkAdapter.WebRecordHolder>() {
 
-    var onItemClick : (p : Int) -> Unit = {}
+    var onItemClick : (item : Item) -> Unit = {}
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WebRecordHolder {
         return WebRecordHolder(LayoutInflater.from(ctx).inflate(R.layout.item_web_record, parent, false))
@@ -41,14 +42,16 @@ class BookmarkAdapter(val ctx: Context, val itemList: MutableList<Item>) : Recyc
 
         init {
             view.setOnClickListener {
-                onItemClick(adapterPosition)
+                onItemClick(itemList[adapterPosition])
             }
             view.setOnLongClickListener {
                 ctx.alert(ctx.getString(R.string.tp_delete_web_item).replace("[val]",itemList[adapterPosition].title)){
                     yesButton {_ ->
                         itemList.removeAt(adapterPosition)
                         notifyItemRemoved(adapterPosition)
-                        //todo delete bookmark in database
+                        AppDatabase.withAppDatabase{db ->
+                            db.getDao().delete(itemList[adapterPosition])
+                        }
                     }
                     cancelButton {  }
                 }
