@@ -13,7 +13,3 @@ class TestActivity : Activity() {
         setContentView( R.layout.activity_main )
     }
 }
-
-fun toast( msg: String ) {
-    Toast.makeText( App.instance, msg, Toast.LENGTH_LONG ).show()
-}

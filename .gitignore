@@ -1,15 +1,3 @@
-
-*.iml
-.gradle
-/local.properties
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-.DS_Store
+/.gradle
+/.idea
 /build
-/captures
-.externalNativeBuild
-.gradle/4.6/fileHashes/fileHashes.bin
-.idea/workspace.xml
-.idea/workspace.xml
-.idea/modules.xml

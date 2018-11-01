@@ -17,6 +17,7 @@ import com.zhj.browser.ui.popup.SearchPopup
 import com.zhj.browser.ui.popup.WebToolMenu
 import com.zhj.browser.ui.viewModel.WebViewModel
 import kotlinx.android.synthetic.main.activity_main.*
+import org.jetbrains.anko.dip
 import org.jetbrains.anko.startActivity
 import java.lang.StringBuilder
 
@@ -54,9 +55,10 @@ class MainActivity : FragmentActivity() {
     private fun toggleFullScreen(){
         val lp = webViewContainer.layoutParams as CoordinatorLayout.LayoutParams
         if(isFullScreen){
-
+            lp.bottomMargin = dip(48)
+        }else{
+            lp.bottomMargin = 0
         }
-        lp.bottomMargin = 0
         webViewContainer.layoutParams = lp
     }
 
