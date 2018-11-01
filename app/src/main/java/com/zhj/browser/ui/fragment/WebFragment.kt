@@ -126,31 +126,31 @@ class WebFragment : Fragment(){
 
         @RequiresApi(Build.VERSION_CODES.M)
         fun savepage(){
-        val filename:String = mWebView.title
-        val url:String = mWebView.url
-        val file_path:String = context.filesDir.toString()+"/"+filename+".mnt"
-        mWebView.saveWebArchive(file_path,false, object :ValueCallback<String>
-        {
-            override fun onReceiveValue(p0: String?) {
-                if(p0==null)
-                {
-                    toast("离线网页保存失败!")
-                }
-                else
-                {
-                    AppDatabase.withAppDatabase { db ->
-                        db.getDao().insert( with( Item.getDefault() ) {
-                            this.bitmapPath = file_path
-                            this.title = filename
-                            this.url = url
-                            this.category = Item.LOCAL
-                            this
-                        })
+            val filename:String = mWebView.title
+            val url:String = mWebView.url
+            val file_path:String = context.filesDir.toString()+"/"+filename+".mnt"
+            mWebView.saveWebArchive(file_path,false, object :ValueCallback<String>
+            {
+                override fun onReceiveValue(p0: String?) {
+                    if(p0==null)
+                    {
+                        toast("离线网页保存失败!")
                     }
-                    toast("离线网页保存成功")
+                    else
+                    {
+                        AppDatabase.withAppDatabase { db ->
+                            db.getDao().insert( with( Item.getDefault() ) {
+                                this.bitmapPath = file_path
+                                this.title = filename
+                                this.url = url
+                                this.category = Item.LOCAL
+                                this
+                            })
+                        }
+                        toast("离线网页保存成功")
+                    }
                 }
-            }
-        })
-    }
+            })
+        }
 
 }
