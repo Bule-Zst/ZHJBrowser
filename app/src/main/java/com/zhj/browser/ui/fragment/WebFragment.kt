@@ -43,10 +43,12 @@ class WebFragment : Fragment(){
             if(isNoImgMode == null)return@observeForever
             else if(isNoImgMode==true)
             {
-                mWebView.settings.blockNetworkImage(true)
+                mWebView.settings.blockNetworkImage = true
+                toast("Set noImage")
             }
             else{
-                mWebView.settings.blockNetworkImage(false)
+                mWebView.settings.blockNetworkImage = false
+                toast("Set haveImage")
             }
         }
         webViewModel.action.observeForever { action : String? ->
@@ -122,7 +124,8 @@ class WebFragment : Fragment(){
         val filename:String = mWebView.title
         val url:String = mWebView.url
         val file_path:String = context.filesDir.toString()+"/"+filename+".mnt"
-        mWebView.saveWebArchive(file_path,false, object: ValueCallback<String>(){
+        mWebView.saveWebArchive(file_path,false, object :ValueCallback<String>
+        {
             override fun onReceiveValue(p0: String?) {
                 if(p0==null)
                 {
