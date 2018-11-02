@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.zhj.browser.R
+import com.zhj.browser.common.IntentDict
 import com.zhj.browser.database.AppDatabase
 import com.zhj.browser.database.Item
 import com.zhj.browser.ui.activity.MainActivity
@@ -23,10 +24,10 @@ class BookmarkFragment : Fragment(){
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         AppDatabase.withAppDatabase { db ->
-            val itemArray = db.getDao().queryByCategory( Item.FAVOUR )
+            val itemArray = db.getItemDao().queryByCategory( Item.FAVOUR )
             val adapter = BookmarkAdapter(activity!!,itemArray.toMutableList())
             adapter.onItemClick = {item ->
-                val intent = activity!!.intentFor<MainActivity>("search" to item.url)
+                startActivity(activity!!.intentFor<MainActivity>(IntentDict.URL to item.url))
             }
             bookmarkListView.adapter = adapter
         }
