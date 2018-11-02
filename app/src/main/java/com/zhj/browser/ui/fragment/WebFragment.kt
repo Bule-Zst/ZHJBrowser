@@ -2,7 +2,6 @@ package com.zhj.browser.ui.fragment
 
 import android.app.Fragment
 import android.arch.lifecycle.ViewModelProviders
-import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Build
 import android.os.Bundle
@@ -14,11 +13,12 @@ import android.view.ViewGroup
 import com.tencent.smtt.sdk.ValueCallback
 import com.tencent.smtt.sdk.WebView
 import com.tencent.smtt.sdk.WebViewClient
-import com.zhj.browser.App
 import com.zhj.browser.R
+import com.zhj.browser.common.info
 import com.zhj.browser.database.AppDatabase
 import com.zhj.browser.database.Item
-import com.zhj.browser.extend.ExtendActivity
+import com.zhj.browser.database.MatchUrl
+import com.zhj.browser.database.MatchUrlDao
 import com.zhj.browser.tool.BitmapTool
 import com.zhj.browser.ui.viewModel.WebViewModel
 import kotlinx.android.synthetic.main.fragment_web.*
@@ -81,17 +81,29 @@ class WebFragment : Fragment(){
                 val bitmap = view.favicon
                 val title = view.title
                 val mUrl = view.url
+                info( String.format( "url is %s", mUrl ) )
                 val bitmapPath =  if( bitmap == null ) "" else { BitmapTool.saveBitmap( bitmap ) }
 
-                val db = AppDatabase.getInstance()
-                db.getDao().insert( with( Item.getDefault() ) {
-                    this.bitmapPath = if( bitmapPath == null ) "" else { bitmapPath }
-                    this.url = mUrl
-                    this.title = title
-                    this.category = 1
-                    this
-                } )
-                db.close()
+//                将数据添加到item表中
+                AppDatabase.withAppDatabase {  db ->
+                    val id = db.getItemDao().insert( with( Item.getDefault() ) {
+                        this.bitmapPath = if( bitmapPath == null ) "" else { bitmapPath }
+                        this.url = mUrl
+                        this.title = title
+                        this.category = 1
+                        this
+                    })
+                    info( String.format( "insert into item success, id = %d", id ) )
+                }
+
+//                将数据添加到match表中
+                AppDatabase.withAppDatabase { db ->
+                    val id = db.getMatchUrlDao().insert( with( MatchUrl.getDefault() ) {
+                        this.url = mUrl
+                        this
+                    })
+                    info( String.format( "insert into match success, id is %d", id ) )
+                }
 
                 if_load = false
             }
@@ -111,7 +123,7 @@ class WebFragment : Fragment(){
 
     private fun addBookMark() {
         AppDatabase.withAppDatabase { db ->
-            db.getDao().insert( with( Item.getDefault() ) {
+            db.getItemDao().insert( with( Item.getDefault() ) {
                 this.title = mWebView.title
                 this.url = mWebView.url
                 this.bitmapPath = if( mWebView.favicon == null ) "" else {
@@ -139,7 +151,7 @@ class WebFragment : Fragment(){
                 else
                 {
                     AppDatabase.withAppDatabase { db ->
-                        db.getDao().insert( with( Item.getDefault() ) {
+                        db.getItemDao().insert( with( Item.getDefault() ) {
                             this.bitmapPath = file_path
                             this.title = filename
                             this.url = url

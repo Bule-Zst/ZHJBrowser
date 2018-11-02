@@ -6,9 +6,10 @@ import android.arch.persistence.room.RoomDatabase
 import android.content.Context
 import com.zhj.browser.App
 
-@Database( entities = [ Item::class ], version = 2 )
+@Database( entities = [ Item::class, MatchUrl::class ], version = 3 )
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun getDao() : ItemDao
+    abstract fun getItemDao() : ItemDao
+    abstract fun getMatchUrlDao() : MatchUrlDao
     companion object {
 //        获取实例
         fun getInstance() : AppDatabase {

@@ -1,15 +1,12 @@
 package com.zhj.browser.ui.activity
 
-import android.os.Bundle
-import android.app.Activity
-import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
+import android.os.Bundle
 import android.support.design.widget.CoordinatorLayout
 import android.support.v4.app.FragmentActivity
-import android.support.v4.widget.NestedScrollView
 import android.view.Gravity
-import android.view.View
 import com.zhj.browser.R
+import com.zhj.browser.common.IntentDict
 import com.zhj.browser.common.PreferenceDict
 import com.zhj.browser.storage.OpenPreference
 import com.zhj.browser.ui.fragment.WebFragment
@@ -17,8 +14,8 @@ import com.zhj.browser.ui.popup.SearchPopup
 import com.zhj.browser.ui.popup.WebToolMenu
 import com.zhj.browser.ui.viewModel.WebViewModel
 import kotlinx.android.synthetic.main.activity_main.*
+import org.jetbrains.anko.dip
 import org.jetbrains.anko.startActivity
-import java.lang.StringBuilder
 
 class MainActivity : FragmentActivity() {
 
@@ -29,7 +26,7 @@ class MainActivity : FragmentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         webViewModel = ViewModelProviders.of(this).get(WebViewModel::class.java)
-        loadPreference()
+        initData()
         initUI()
     }
 
@@ -46,7 +43,8 @@ class MainActivity : FragmentActivity() {
         }
     }
 
-    private fun loadPreference(){
+    private fun initData(){
+        webViewModel.currentUrl.value = intent.extras[IntentDict.URL] as String
         isFullScreen = OpenPreference.getBoolean(PreferenceDict.isFullScreen,false)
         webViewModel.isNoImgMode.value = OpenPreference.getBoolean(PreferenceDict.isNoImgMode,false)
     }
@@ -54,9 +52,10 @@ class MainActivity : FragmentActivity() {
     private fun toggleFullScreen(){
         val lp = webViewContainer.layoutParams as CoordinatorLayout.LayoutParams
         if(isFullScreen){
-
+            lp.bottomMargin = dip(48)
+        }else{
+            lp.bottomMargin = 0
         }
-        lp.bottomMargin = 0
         webViewContainer.layoutParams = lp
     }
 
