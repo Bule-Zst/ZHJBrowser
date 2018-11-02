@@ -23,6 +23,7 @@ data class Item(
 //        类别常量
         val FAVOUR = 0
         val HISTORY = 1
+        val LOCAL = 2
     }
 }
 

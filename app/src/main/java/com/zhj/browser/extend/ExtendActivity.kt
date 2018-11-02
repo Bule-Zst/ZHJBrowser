@@ -6,7 +6,7 @@ import com.zhj.browser.R
 import com.zhj.browser.database.AppDatabase
 import com.zhj.browser.database.Item
 import com.zhj.browser.database.toMsg
-import com.zhj.browser.database.toast
+import org.jetbrains.anko.toast
 
 //收藏夹、历史记录、本地保存都共用一个Activity
 class ExtendActivity : Activity() {
@@ -33,7 +33,7 @@ class ExtendActivity : Activity() {
 //    以下两个draw函数，功能类似
     fun drawHistory() {
         val db = AppDatabase.getInstance()
-        val list = db.getDao().queryByCategory( Item.HISTORY )
+        val list = db.getItemDao().queryByCategory( Item.HISTORY )
         db.close()
 //        开始渲染
         toast( list.toMsg() )

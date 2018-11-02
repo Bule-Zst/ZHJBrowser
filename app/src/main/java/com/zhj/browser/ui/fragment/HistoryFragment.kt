@@ -19,7 +19,7 @@ class HistoryFragment : Fragment(){
         //todo 加载历史记录
         var itemArray = emptyArray<Item>()
         AppDatabase.withAppDatabase { db ->
-            itemArray = db.getDao().queryByCategory( Item.HISTORY )
+            itemArray = db.getItemDao().queryByCategory( Item.HISTORY )
         }
 
     }
