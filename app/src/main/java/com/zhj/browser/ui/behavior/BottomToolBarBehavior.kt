@@ -5,6 +5,7 @@ import android.support.design.widget.CoordinatorLayout
 import android.support.v4.widget.NestedScrollView
 import android.util.AttributeSet
 import android.view.View
+import com.zhj.browser.common.Global
 
 class BottomToolBarBehavior(c: Context, attrs: AttributeSet) : CoordinatorLayout.Behavior<View>(c, attrs) {
 
@@ -15,8 +16,7 @@ class BottomToolBarBehavior(c: Context, attrs: AttributeSet) : CoordinatorLayout
     }
 
     override fun onDependentViewChanged(parent: CoordinatorLayout?, child: View?, dependency: View?): Boolean {
-        if (dependency == null) return super.onDependentViewChanged(parent, child, dependency)
-        println("gety == ${dependency.y}")
+        if (dependency == null || !Global.isFullScreen) return super.onDependentViewChanged(parent, child, dependency)
         if (oldY == -1f) {
             oldY = dependency.y
         } else if (dependency.y - oldY > 0) {

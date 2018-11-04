@@ -20,4 +20,10 @@
         android:imeOptions="actionSearch"
         android:textColor="@color/black"
         android:textSize="16sp"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/matchListView"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </LinearLayout>

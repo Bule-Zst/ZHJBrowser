@@ -58,7 +58,9 @@ class WebFragment : Fragment(){
                 return@observeForever
             }
             when(action){
-                WebViewModel.ACTION_SAVE -> {}
+                WebViewModel.ACTION_SAVE -> {
+                    savepage()
+                }
                 WebViewModel.ACTION_SYNC -> {}
                 WebViewModel.ACTION_FAVORITE -> {}
                 WebViewModel.ACTION_BACK -> {}
@@ -136,11 +138,10 @@ class WebFragment : Fragment(){
         }
     }
 
-        @RequiresApi(Build.VERSION_CODES.M)
-        fun savepage(){
+    fun savepage(){
         val filename:String = mWebView.title
         val url:String = mWebView.url
-        val file_path:String = context.filesDir.toString()+"/"+filename+".mnt"
+        val file_path:String = activity.filesDir.toString()+"/"+filename+".mnt"
         mWebView.saveWebArchive(file_path,false, object :ValueCallback<String>
         {
             override fun onReceiveValue(p0: String?) {
