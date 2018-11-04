@@ -50,7 +50,7 @@ class BookmarkAdapter(val ctx: Context, val itemList: MutableList<Item>) : Recyc
                         itemList.removeAt(adapterPosition)
                         notifyItemRemoved(adapterPosition)
                         AppDatabase.withAppDatabase{db ->
-                            db.getDao().delete(itemList[adapterPosition])
+                            db.getItemDao().delete(itemList[adapterPosition])
                         }
                     }
                     cancelButton {  }
