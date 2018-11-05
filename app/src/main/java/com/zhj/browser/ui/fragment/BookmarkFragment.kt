@@ -27,7 +27,11 @@ class BookmarkFragment : Fragment(){
             val itemArray = db.getItemDao().queryByCategory( Item.FAVOUR )
             val adapter = BookmarkAdapter(activity!!,itemArray.toMutableList())
             adapter.onItemClick = {item ->
-                startActivity(activity!!.intentFor<MainActivity>(IntentDict.URL to item.url))
+                val intent = Intent()
+                intent.action = IntentDict.ACTION_SEARCH_URL
+                intent.putExtra(IntentDict.URL,item.url)
+                activity!!.sendBroadcast(intent)
+                activity!!.finish()
             }
             bookmarkListView.adapter = adapter
         }

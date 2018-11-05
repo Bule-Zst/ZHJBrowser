@@ -19,4 +19,5 @@ class WebViewModel : ViewModel(){
     val isAdaptive = MutableLiveData<Boolean>()
     val currentSearch = MutableLiveData<String>()
     val currentUrl = MutableLiveData<String>()
+    val currentPath = MutableLiveData<String>()
 }

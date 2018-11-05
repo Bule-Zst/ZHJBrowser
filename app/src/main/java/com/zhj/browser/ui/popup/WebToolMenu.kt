@@ -10,6 +10,8 @@ import android.widget.ImageView
 import android.widget.PopupWindow
 import com.zhj.browser.R
 import com.zhj.browser.bean.WebToolMenuItem
+import com.zhj.browser.common.PreferenceDict
+import com.zhj.browser.storage.OpenPreference
 import com.zhj.browser.tool.obtainColor
 import com.zhj.browser.ui.adapter.WebToolMenuAdapter
 import org.jetbrains.anko.find
@@ -40,7 +42,17 @@ class WebToolMenu(c : Context, onMenuItemClick : (tag : String)->Unit) : PopupWi
         val view = LayoutInflater.from(c).inflate(R.layout.popup_menu_web_tool,null)
         val menuListView = view.find<RecyclerView>(R.id.menuListView)
         menuListView.layoutManager = GridLayoutManager(c,4)
-        val adapter = WebToolMenuAdapter(c, webToolMenuList)
+        val needTintList = MutableList(8){ index -> false }
+        if(OpenPreference.getBoolean(PreferenceDict.isFullScreen,false)){
+            needTintList[2] = true
+        }
+        if(OpenPreference.getBoolean(PreferenceDict.isNoImgMode,false)){
+            needTintList[5] = true
+        }
+        if(OpenPreference.getBoolean(PreferenceDict.isAdaptive,false)){
+            needTintList[6] = true
+        }
+        val adapter = WebToolMenuAdapter(c, webToolMenuList,needTintList)
         adapter.onItemClick = {tag ->
             onMenuItemClick(tag)
             dismiss()

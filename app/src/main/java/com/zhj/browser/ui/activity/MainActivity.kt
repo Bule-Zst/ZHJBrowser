@@ -1,10 +1,15 @@
 package com.zhj.browser.ui.activity
 
 import android.arch.lifecycle.ViewModelProviders
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.support.design.widget.CoordinatorLayout
 import android.support.v4.app.FragmentActivity
 import android.view.Gravity
+import android.view.KeyEvent
 import android.view.View
 import com.zhj.browser.R
 import com.zhj.browser.common.Global
@@ -22,6 +27,7 @@ import org.jetbrains.anko.startActivity
 class MainActivity : FragmentActivity() {
 
     private lateinit var webViewModel: WebViewModel
+    private var openUrlReceiver: BroadcastReceiver? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +55,7 @@ class MainActivity : FragmentActivity() {
             searchView.showAtLocation(mainActivityLayout,Gravity.TOP or Gravity.START,0,0)
 
             goBackBtn.setOnClickListener {
+                println("==============go back===========")
                 webViewModel.action.value = WebViewModel.ACTION_BACK
             }
             goForwardBtn.setOnClickListener {
@@ -68,10 +75,21 @@ class MainActivity : FragmentActivity() {
     }
 
     private fun initData(){
-        webViewModel.currentUrl.value = (intent?.extras?.get(IntentDict.URL) as String?)?:""
         Global.isFullScreen = OpenPreference.getBoolean(PreferenceDict.isFullScreen,false)
         webViewModel.isNoImgMode.value = OpenPreference.getBoolean(PreferenceDict.isNoImgMode,false)
-        webViewModel.isAdaptive.value = OpenPreference.getBoolean(PreferenceDict.isAdaptive,false)
+        webViewModel.isAdaptive.value = OpenPreference.getBoolean(PreferenceDict.isAdaptive, false)
+
+        openUrlReceiver = object : BroadcastReceiver(){
+            override fun onReceive(ctx: Context?, intent: Intent?) {
+                val searchContent = intent?.getStringExtra(IntentDict.URL)
+                if(searchContent != null && searchContent.isNotBlank()){
+                    webViewModel.currentUrl.value = searchContent
+                }
+            }
+        }
+        val intentFilter = IntentFilter()
+        intentFilter.addAction(IntentDict.ACTION_SEARCH_URL)
+        registerReceiver(openUrlReceiver,intentFilter)
     }
 
     private fun toggleFullScreen(){
@@ -111,5 +129,20 @@ class MainActivity : FragmentActivity() {
             }
         }
         popToolView.showAtLocation(mainActivityLayout,Gravity.BOTTOM or Gravity.START,0,0)
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            webViewModel.action.value = WebViewModel.ACTION_BACK
+        }
+        return true
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if(openUrlReceiver != null){
+            unregisterReceiver(openUrlReceiver)
+            openUrlReceiver = null
+        }
     }
 }

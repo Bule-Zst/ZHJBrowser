@@ -1,6 +1,7 @@
 package com.zhj.browser.ui.adapter
 
 import android.content.Context
+import android.graphics.BitmapFactory
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -29,7 +30,8 @@ class BookmarkAdapter(val ctx: Context, val itemList: MutableList<Item>) : Recyc
     override fun onBindViewHolder(holder: WebRecordHolder, position: Int) {
         val bean = itemList[position]
         if (bean.bitmapPath.isNotBlank()) {
-            Picasso.get().load(bean.bitmapPath).placeholder(R.mipmap.image).error(R.mipmap.image).into(holder.iconView)
+            holder.iconView.setImageBitmap(BitmapFactory.decodeFile(bean.bitmapPath))
+            //Picasso.get().load(bean.bitmapPath).placeholder(R.mipmap.image).error(R.mipmap.image).into(holder.iconView)
         }
         holder.titleView.text = bean.title
         holder.urlView.text = bean.url
