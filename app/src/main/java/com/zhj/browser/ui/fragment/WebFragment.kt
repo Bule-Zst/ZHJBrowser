@@ -37,7 +37,7 @@ class WebFragment : Fragment(){
         webViewModel = ViewModelProviders.of(activity as FragmentActivity).get(WebViewModel::class.java)
         startObserve()
         addListen()
-        //mWebView.loadUrl( "https://www.baidu.com/" )
+        mWebView.loadUrl( "https://www.baidu.com/" )
     }
 
     private fun startObserve(){
