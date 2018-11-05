@@ -24,7 +24,7 @@ class WebToolMenu(c : Context, onMenuItemClick : (tag : String)->Unit) : PopupWi
                 WebToolMenuItem(R.drawable.ic_sync,"刷新","update"),
                 WebToolMenuItem(R.drawable.ic_get_app,"保存本地","save"),
                 WebToolMenuItem(R.drawable.ic_layers_clear,"无图","noImage"),
-                WebToolMenuItem(R.drawable.ic_info_outline,"关于我们","about"),
+                WebToolMenuItem(R.drawable.ic_aspect_ratio,"网页自适应","adaptive"),
                 WebToolMenuItem(R.drawable.ic_exit_to_app,"退出","exit")
         )
     }

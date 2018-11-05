@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.support.design.widget.CoordinatorLayout
 import android.support.v4.app.FragmentActivity
 import android.view.Gravity
+import android.view.View
 import com.zhj.browser.R
+import com.zhj.browser.common.Global
 import com.zhj.browser.common.IntentDict
 import com.zhj.browser.common.PreferenceDict
 import com.zhj.browser.storage.OpenPreference
@@ -19,7 +21,6 @@ import org.jetbrains.anko.startActivity
 
 class MainActivity : FragmentActivity() {
 
-    private var isFullScreen = false
     private lateinit var webViewModel: WebViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,17 +45,21 @@ class MainActivity : FragmentActivity() {
     }
 
     private fun initData(){
-        webViewModel.currentUrl.value = intent.extras[IntentDict.URL] as String
-        isFullScreen = OpenPreference.getBoolean(PreferenceDict.isFullScreen,false)
+        webViewModel.currentUrl.value = (intent?.extras?.get(IntentDict.URL) as String?)?:""
+        Global.isFullScreen = OpenPreference.getBoolean(PreferenceDict.isFullScreen,false)
         webViewModel.isNoImgMode.value = OpenPreference.getBoolean(PreferenceDict.isNoImgMode,false)
+        webViewModel.isAdaptive.value = OpenPreference.getBoolean(PreferenceDict.isAdaptive,false)
     }
 
     private fun toggleFullScreen(){
+        Global.isFullScreen = !Global.isFullScreen
         val lp = webViewContainer.layoutParams as CoordinatorLayout.LayoutParams
-        if(isFullScreen){
-            lp.bottomMargin = dip(48)
-        }else{
+        if(Global.isFullScreen){
             lp.bottomMargin = 0
+            mainMenuContainer.visibility = View.GONE
+        }else{
+            lp.bottomMargin = dip(48)
+            mainMenuContainer.visibility = View.VISIBLE
         }
         webViewContainer.layoutParams = lp
     }
@@ -73,7 +78,12 @@ class MainActivity : FragmentActivity() {
                     OpenPreference.put(PreferenceDict.isNoImgMode,isNoImgMode)
                     webViewModel.isNoImgMode.value = isNoImgMode
                 }
-                "about" -> {}
+                "adaptive" -> {
+                    var isAdaptive = webViewModel.isAdaptive.value?:false
+                    isAdaptive = !isAdaptive
+                    OpenPreference.put(PreferenceDict.isAdaptive,isAdaptive)
+                    webViewModel.isAdaptive.value = isAdaptive
+                }
                 "exit" -> {System.exit(0)}
             }
         }

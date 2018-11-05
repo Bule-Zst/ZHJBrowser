@@ -27,7 +27,7 @@ data class Item(
     }
 }
 
-fun Array<Item>.toMsg() : String {
+fun List<Item>.toMsg() : String {
     var res = ""
     for( item in this ) {
         res += item.toString() + "\n"

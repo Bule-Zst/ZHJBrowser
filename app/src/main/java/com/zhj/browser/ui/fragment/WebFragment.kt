@@ -58,9 +58,13 @@ class WebFragment : Fragment(){
                 return@observeForever
             }
             when(action){
-                WebViewModel.ACTION_SAVE -> {}
+                WebViewModel.ACTION_SAVE -> {
+                    savepage()
+                }
                 WebViewModel.ACTION_SYNC -> {}
-                WebViewModel.ACTION_FAVORITE -> {}
+                WebViewModel.ACTION_FAVORITE -> {
+                    addBookMark()
+                }
                 WebViewModel.ACTION_BACK -> {}
                 WebViewModel.ACTION_FORWARD -> {}
                 WebViewModel.ACTION_HOME -> {}
@@ -68,11 +72,23 @@ class WebFragment : Fragment(){
         }
     }
 
+    private fun openAdaptiveMode() {
+        val settings = mWebView.settings
+        settings.loadWithOverviewMode = true
+    }
+
+    private fun closeAdaptiveMode() {
+        val settings = mWebView.settings
+        settings.loadWithOverviewMode = false
+    }
+
     fun addListen() {
         mWebView.webViewClient = object : WebViewClient() {
             private var if_load: Boolean = false
             override fun onPageFinished(view: WebView, url: String) {
                 super.onPageFinished( view, url )
+
+                info( "on page finish" )
 
                 if( !if_load ) {
                     return;
@@ -122,8 +138,9 @@ class WebFragment : Fragment(){
     }
 
     private fun addBookMark() {
+        info( "add book mark" )
         AppDatabase.withAppDatabase { db ->
-            db.getItemDao().insert( with( Item.getDefault() ) {
+            val id = db.getItemDao().insert( with( Item.getDefault() ) {
                 this.title = mWebView.title
                 this.url = mWebView.url
                 this.bitmapPath = if( mWebView.favicon == null ) "" else {
@@ -132,21 +149,32 @@ class WebFragment : Fragment(){
                 this.category = Item.FAVOUR
                 this
             })
+            info( String.format( "insert into item success, id is %d", id ) )
             toast( "add bookmark success" )
         }
     }
 
-        @RequiresApi(Build.VERSION_CODES.M)
-        fun savepage(){
-            val filename:String = mWebView.title
-            val url:String = mWebView.url
-            val file_path:String = context.filesDir.toString()+"/"+filename+".mnt"
-            mWebView.saveWebArchive(file_path,false, object :ValueCallback<String>
-            {
-                override fun onReceiveValue(p0: String?) {
-                    if(p0==null)
-                    {
-                        toast("离线网页保存失败!")
+    fun savepage(){
+        val filename:String = mWebView.title
+        val url:String = mWebView.url
+        val file_path:String = activity.filesDir.toString()+"/"+filename+".mnt"
+        mWebView.saveWebArchive(file_path,false, object :ValueCallback<String>
+        {
+            override fun onReceiveValue(p0: String?) {
+                if(p0==null)
+                {
+                    toast("离线网页保存失败!")
+                }
+                else
+                {
+                    AppDatabase.withAppDatabase { db ->
+                        db.getItemDao().insert( with( Item.getDefault() ) {
+                            this.bitmapPath = file_path
+                            this.title = filename
+                            this.url = url
+                            this.category = Item.LOCAL
+                            this
+                        })
                     }
                     else
                     {
@@ -162,7 +190,7 @@ class WebFragment : Fragment(){
                         toast("离线网页保存成功")
                     }
                 }
-            })
-        }
-
+            }
+        })
+    }
 }
