@@ -62,7 +62,9 @@ class WebFragment : Fragment(){
                     savepage()
                 }
                 WebViewModel.ACTION_SYNC -> {}
-                WebViewModel.ACTION_FAVORITE -> {}
+                WebViewModel.ACTION_FAVORITE -> {
+                    addBookMark()
+                }
                 WebViewModel.ACTION_BACK -> {}
                 WebViewModel.ACTION_FORWARD -> {}
                 WebViewModel.ACTION_HOME -> {}
@@ -70,11 +72,23 @@ class WebFragment : Fragment(){
         }
     }
 
+    private fun openAdaptiveMode() {
+        val settings = mWebView.settings
+        settings.loadWithOverviewMode = true
+    }
+
+    private fun closeAdaptiveMode() {
+        val settings = mWebView.settings
+        settings.loadWithOverviewMode = false
+    }
+
     fun addListen() {
         mWebView.webViewClient = object : WebViewClient() {
             private var if_load: Boolean = false
             override fun onPageFinished(view: WebView, url: String) {
                 super.onPageFinished( view, url )
+
+                info( "on page finish" )
 
                 if( !if_load ) {
                     return;
@@ -124,8 +138,9 @@ class WebFragment : Fragment(){
     }
 
     private fun addBookMark() {
+        info( "add book mark" )
         AppDatabase.withAppDatabase { db ->
-            db.getItemDao().insert( with( Item.getDefault() ) {
+            val id = db.getItemDao().insert( with( Item.getDefault() ) {
                 this.title = mWebView.title
                 this.url = mWebView.url
                 this.bitmapPath = if( mWebView.favicon == null ) "" else {
@@ -134,6 +149,7 @@ class WebFragment : Fragment(){
                 this.category = Item.FAVOUR
                 this
             })
+            info( String.format( "insert into item success, id is %d", id ) )
             toast( "add bookmark success" )
         }
     }
@@ -165,5 +181,4 @@ class WebFragment : Fragment(){
             }
         })
     }
-
 }
