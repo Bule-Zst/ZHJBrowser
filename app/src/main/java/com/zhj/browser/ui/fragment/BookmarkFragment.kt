@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.zhj.browser.R
 import com.zhj.browser.common.IntentDict
+import com.zhj.browser.common.info
 import com.zhj.browser.database.AppDatabase
 import com.zhj.browser.database.Item
 import com.zhj.browser.ui.activity.MainActivity
@@ -25,6 +26,7 @@ class BookmarkFragment : Fragment(){
         super.onActivityCreated(savedInstanceState)
         AppDatabase.withAppDatabase { db ->
             val itemArray = db.getItemDao().queryByCategory( Item.FAVOUR )
+            info( itemArray.size.toString() )
             val adapter = BookmarkAdapter(activity!!,itemArray.toMutableList())
             adapter.onItemClick = {item ->
                 val intent = Intent()

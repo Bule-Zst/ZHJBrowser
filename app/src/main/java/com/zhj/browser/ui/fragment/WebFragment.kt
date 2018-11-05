@@ -80,6 +80,7 @@ class WebFragment : Fragment(){
                     savepage()
                 }
                 WebViewModel.ACTION_SYNC -> {
+                    info( webViewModel.currentUrl.value.toString() )
                     if(webViewModel.currentUrl.value?.isNotBlank()?:false){
                         mWebView.reload()
                     }
