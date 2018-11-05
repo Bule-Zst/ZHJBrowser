@@ -1,7 +1,6 @@
 package com.zhj.browser.ui.popup
 
 import android.app.Activity
-import android.content.Context
 import android.graphics.drawable.ColorDrawable
 import android.support.v7.widget.RecyclerView
 import android.view.KeyEvent
@@ -9,10 +8,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.PopupWindow
-import android.widget.TextView
 import com.zhj.browser.R
 import com.zhj.browser.tool.obtainColor
-import com.zhj.browser.ui.adapter.MatchUrlAdapter
 import com.zhj.browser.ui.view.SearchEditText
 import org.jetbrains.anko.find
 

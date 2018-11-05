@@ -36,7 +36,7 @@ class ExtendActivity : Activity() {
         val list = db.getItemDao().queryByCategory( Item.HISTORY )
         db.close()
 //        开始渲染
-        toast( list.toMsg() )
+        toast( list.toString() )
     }
     fun drawFavour() {
 

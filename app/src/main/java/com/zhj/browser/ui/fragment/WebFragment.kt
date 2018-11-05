@@ -37,10 +37,18 @@ class WebFragment : Fragment(){
         webViewModel = ViewModelProviders.of(activity as FragmentActivity).get(WebViewModel::class.java)
         startObserve()
         addListen()
-        mWebView.loadUrl( "https://www.baidu.com/" )
+        //mWebView.loadUrl( "https://www.baidu.com/" )
     }
 
     private fun startObserve(){
+        webViewModel.currentUrl.observeForever { url ->
+            mWebView.loadUrl(url)
+        }
+        webViewModel.currentSearch.observeForever { word ->
+            if(word != null && word.isNotBlank()){
+                mWebView.loadUrl("https://www.baidu.com/s?ie=UTF-8&wd=" + word)
+            }
+        }
         webViewModel.isNoImgMode.observeForever { isNoImgMode : Boolean? ->
             if(isNoImgMode == null)return@observeForever
             else if(isNoImgMode==true)
@@ -61,13 +69,23 @@ class WebFragment : Fragment(){
                 WebViewModel.ACTION_SAVE -> {
                     savepage()
                 }
-                WebViewModel.ACTION_SYNC -> {}
+                WebViewModel.ACTION_SYNC -> {
+                    if(webViewModel.currentUrl.value?.isNotBlank()?:false){
+                        mWebView.reload()
+                    }
+                }
                 WebViewModel.ACTION_FAVORITE -> {
                     addBookMark()
                 }
-                WebViewModel.ACTION_BACK -> {}
-                WebViewModel.ACTION_FORWARD -> {}
-                WebViewModel.ACTION_HOME -> {}
+                WebViewModel.ACTION_BACK -> {
+                    mWebView.goBack()
+                }
+                WebViewModel.ACTION_FORWARD -> {
+                    mWebView.goForward()
+                }
+                WebViewModel.ACTION_HOME -> {
+                    mWebView.loadUrl("https://www.baidu.com/")
+                }
             }
         }
     }
