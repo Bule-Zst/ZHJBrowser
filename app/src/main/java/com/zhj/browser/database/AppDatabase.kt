@@ -6,7 +6,7 @@ import android.arch.persistence.room.RoomDatabase
 import android.content.Context
 import com.zhj.browser.App
 
-@Database( entities = [ Item::class, MatchUrl::class ], version = 3 )
+@Database( entities = [ Item::class, MatchUrl::class ], version = 1 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun getItemDao() : ItemDao
     abstract fun getMatchUrlDao() : MatchUrlDao
