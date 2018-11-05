@@ -61,6 +61,16 @@ class WebFragment : Fragment(){
                 toast("Set haveImage")
             }
         }
+        webViewModel.isAdaptive.observeForever { isAdaptive: Boolean? ->
+            if( isAdaptive == null ) {
+                return@observeForever
+            }
+            if(isAdaptive) {
+                openAdaptiveMode()
+            } else {
+                closeAdaptiveMode()
+            }
+        }
         webViewModel.action.observeForever { action : String? ->
             if (action == null) {
                 return@observeForever
@@ -78,6 +88,7 @@ class WebFragment : Fragment(){
                     addBookMark()
                 }
                 WebViewModel.ACTION_BACK -> {
+                    info( "go back" )
                     mWebView.goBack()
                 }
                 WebViewModel.ACTION_FORWARD -> {
@@ -93,11 +104,13 @@ class WebFragment : Fragment(){
     private fun openAdaptiveMode() {
         val settings = mWebView.settings
         settings.loadWithOverviewMode = true
+        toast( "adaptive mode is opend" )
     }
 
     private fun closeAdaptiveMode() {
         val settings = mWebView.settings
         settings.loadWithOverviewMode = false
+        toast( "adaptive mode is closed" )
     }
 
     fun addListen() {
