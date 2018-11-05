@@ -176,19 +176,6 @@ class WebFragment : Fragment(){
                             this
                         })
                     }
-                    else
-                    {
-                        AppDatabase.withAppDatabase { db ->
-                            db.getDao().insert( with( Item.getDefault() ) {
-                                this.bitmapPath = file_path
-                                this.title = filename
-                                this.url = url
-                                this.category = Item.LOCAL
-                                this
-                            })
-                        }
-                        toast("离线网页保存成功")
-                    }
                 }
             }
         })
