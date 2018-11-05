@@ -29,7 +29,7 @@ class BookmarkAdapter(val ctx: Context, val itemList: MutableList<Item>) : Recyc
     override fun onBindViewHolder(holder: WebRecordHolder, position: Int) {
         val bean = itemList[position]
         if (bean.bitmapPath.isNotBlank()) {
-            Picasso.get().load(bean.bitmapPath).placeholder(R.mipmap.image).error(R.mipmap.image).centerCrop().into(holder.iconView)
+            Picasso.get().load(bean.bitmapPath).placeholder(R.mipmap.image).error(R.mipmap.image).into(holder.iconView)
         }
         holder.titleView.text = bean.title
         holder.urlView.text = bean.url
