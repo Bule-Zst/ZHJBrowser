@@ -44,6 +44,19 @@ class MainActivity : FragmentActivity() {
                 }
             }
             searchView.showAtLocation(mainActivityLayout,Gravity.TOP or Gravity.START,0,0)
+
+            goBackBtn.setOnClickListener {
+                webViewModel.action.value = WebViewModel.ACTION_BACK
+            }
+            goForwardBtn.setOnClickListener {
+                webViewModel.action.value = WebViewModel.ACTION_FORWARD
+            }
+            goHomeBtn.setOnClickListener {
+                webViewModel.action.value = WebViewModel.ACTION_HOME
+            }
+            updatePageBtn.setOnClickListener {
+                webViewModel.action.value = WebViewModel.ACTION_SYNC
+            }
         }
 
         toolMenu.setOnClickListener {
