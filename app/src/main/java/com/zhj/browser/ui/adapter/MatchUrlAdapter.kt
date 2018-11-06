@@ -10,7 +10,7 @@ import com.zhj.browser.R
 import com.zhj.browser.database.MatchUrl
 import org.jetbrains.anko.find
 
-class MatchUrlAdapter(private val c: Context, private val matchList: List<MatchUrl>) : RecyclerView.Adapter<MatchUrlAdapter.MatchUrlHolder>(){
+class MatchUrlAdapter(private val c: Context, var matchList: List<MatchUrl>) : RecyclerView.Adapter<MatchUrlAdapter.MatchUrlHolder>(){
 
     var onMatchItemClick : (url : String) -> Unit = {}
 

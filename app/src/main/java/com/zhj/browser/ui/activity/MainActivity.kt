@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.support.design.widget.CoordinatorLayout
 import android.support.v4.app.FragmentActivity
@@ -43,11 +44,11 @@ class MainActivity : FragmentActivity() {
         startSearchView.setOnClickListener {
             val searchView = SearchPopup(this)
             searchView.onSearchStart = {word ->
-                var _word=word
-                if(word.matches("""^(http(s)?://)?(www\.)?[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+(:\d+)*(/\w+\.\w+)*$""".toRegex())){
-                    if(word.indexOf("http")==-1)
-                        _word = "http://"+word
-                    webViewModel.currentUrl.value = _word
+                if(word.matches("""^(http(s)?://)?(www\.)?[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+(:\d+)*(/\w+\.\w+)*/?$""".toRegex())){
+                    if(!word.startsWith("http"))
+                        webViewModel.currentUrl.value = "http://$word"
+                    else
+                        webViewModel.currentUrl.value = word
                 }else if(word.isNotBlank()){
                     webViewModel.currentSearch.value = word
                 }
@@ -98,9 +99,11 @@ class MainActivity : FragmentActivity() {
         if(Global.isFullScreen){
             lp.bottomMargin = 0
             mainMenuContainer.visibility = View.GONE
+            OpenPreference.put(PreferenceDict.isFullScreen,true)
         }else{
             lp.bottomMargin = dip(48)
             mainMenuContainer.visibility = View.VISIBLE
+            OpenPreference.put(PreferenceDict.isFullScreen,true)
         }
         webViewContainer.layoutParams = lp
     }
