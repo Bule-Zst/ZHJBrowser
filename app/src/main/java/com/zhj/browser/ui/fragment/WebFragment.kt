@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Bundle
 import android.support.annotation.RequiresApi
 import android.support.v4.app.FragmentActivity
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,12 +25,12 @@ import com.zhj.browser.ui.viewModel.WebViewModel
 import kotlinx.android.synthetic.main.fragment_web.*
 import org.jetbrains.anko.toast
 
-class WebFragment : Fragment(){
+class WebFragment : Fragment() {
 
     private lateinit var webViewModel: WebViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return inflater.inflate(R.layout.fragment_web,container,false)
+        return inflater.inflate(R.layout.fragment_web, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -37,59 +38,55 @@ class WebFragment : Fragment(){
         webViewModel = ViewModelProviders.of(activity as FragmentActivity).get(WebViewModel::class.java)
         startObserve()
         addListen()
-        mWebView.loadUrl( "https://www.baidu.com/" )
+        mWebView.loadUrl("https://www.baidu.com/")
     }
 
-    private fun startObserve(){
+    private fun startObserve() {
         webViewModel.currentUrl.observeForever { url ->
             mWebView.loadUrl(url)
         }
         webViewModel.currentSearch.observeForever { word ->
-            if(word != null && word.isNotBlank()){
+            if (word != null && word.isNotBlank()) {
                 mWebView.loadUrl("https://www.baidu.com/s?ie=UTF-8&wd=" + word)
             }
         }
-        webViewModel.isNoImgMode.observeForever { isNoImgMode : Boolean? ->
-            if(isNoImgMode == null)return@observeForever
-            else if(isNoImgMode==true)
-            {
+        webViewModel.isNoImgMode.observeForever { isNoImgMode: Boolean? ->
+            if (isNoImgMode == null) return@observeForever
+            else if (isNoImgMode == true) {
                 mWebView.settings.blockNetworkImage = true
                 toast("Set noImage")
-            }
-            else{
+            } else {
                 mWebView.settings.blockNetworkImage = false
                 toast("Set haveImage")
             }
         }
         webViewModel.isAdaptive.observeForever { isAdaptive: Boolean? ->
-            if( isAdaptive == null ) {
+            if (isAdaptive == null) {
                 return@observeForever
             }
-            if(isAdaptive) {
+            if (isAdaptive) {
                 openAdaptiveMode()
             } else {
                 closeAdaptiveMode()
             }
         }
-        webViewModel.action.observeForever { action : String? ->
+        webViewModel.action.observeForever { action: String? ->
             if (action == null) {
                 return@observeForever
             }
-            when(action){
+            when (action) {
                 WebViewModel.ACTION_SAVE -> {
                     savepage()
                 }
                 WebViewModel.ACTION_SYNC -> {
-                    info( webViewModel.currentUrl.value.toString() )
-                    if(webViewModel.currentUrl.value?.isNotBlank()?:false){
-                        mWebView.reload()
-                    }
+                    Log.i("ZXJ","Reload yes")
+                    mWebView.reload()
                 }
                 WebViewModel.ACTION_FAVORITE -> {
                     addBookMark()
                 }
                 WebViewModel.ACTION_BACK -> {
-                    info( "go back" )
+                    info("go back")
                     mWebView.goBack()
                 }
                 WebViewModel.ACTION_FORWARD -> {
@@ -105,52 +102,56 @@ class WebFragment : Fragment(){
     private fun openAdaptiveMode() {
         val settings = mWebView.settings
         settings.loadWithOverviewMode = true
-        toast( "adaptive mode is opend" )
+        toast("adaptive mode is opend")
     }
 
     private fun closeAdaptiveMode() {
         val settings = mWebView.settings
         settings.loadWithOverviewMode = false
-        toast( "adaptive mode is closed" )
+        toast("adaptive mode is closed")
     }
 
     fun addListen() {
         mWebView.webViewClient = object : WebViewClient() {
             private var if_load: Boolean = false
             override fun onPageFinished(view: WebView, url: String) {
-                super.onPageFinished( view, url )
+                super.onPageFinished(view, url)
 
-                info( "on page finish" )
+                info("on page finish")
 
-                if( !if_load ) {
+                if (!if_load) {
                     return;
                 }
 
                 val bitmap = view.favicon
                 val title = view.title
                 val mUrl = view.url
-                info( String.format( "url is %s", mUrl ) )
-                val bitmapPath =  if( bitmap == null ) "" else { BitmapTool.saveBitmap( bitmap ) }
+                info(String.format("url is %s", mUrl))
+                val bitmapPath = if (bitmap == null) "" else {
+                    BitmapTool.saveBitmap(bitmap)
+                }
 
 //                将数据添加到item表中
-                AppDatabase.withAppDatabase {  db ->
-                    val id = db.getItemDao().insert( with( Item.getDefault() ) {
-                        this.bitmapPath = if( bitmapPath == null ) "" else { bitmapPath }
+                AppDatabase.withAppDatabase { db ->
+                    val id = db.getItemDao().insert(with(Item.getDefault()) {
+                        this.bitmapPath = if (bitmapPath == null) "" else {
+                            bitmapPath
+                        }
                         this.url = mUrl
                         this.title = title
                         this.category = 1
                         this
                     })
-                    info( String.format( "insert into item success, id = %d", id ) )
+                    info(String.format("insert into item success, id = %d", id))
                 }
 
 //                将数据添加到match表中
                 AppDatabase.withAppDatabase { db ->
-                    val id = db.getMatchUrlDao().insert( with( MatchUrl.getDefault() ) {
+                    val id = db.getMatchUrlDao().insert(with(MatchUrl.getDefault()) {
                         this.url = mUrl
                         this
                     })
-                    info( String.format( "insert into match success, id is %d", id ) )
+                    info(String.format("insert into match success, id is %d", id))
                 }
 
                 if_load = false
@@ -170,37 +171,35 @@ class WebFragment : Fragment(){
     }
 
     private fun addBookMark() {
-        info( "add book mark" )
+        info("add book mark")
         AppDatabase.withAppDatabase { db ->
-            val id = db.getItemDao().insert( with( Item.getDefault() ) {
+            val id = db.getItemDao().insert(with(Item.getDefault()) {
                 this.title = mWebView.title
                 this.url = mWebView.url
-                this.bitmapPath = if( mWebView.favicon == null ) "" else {
-                    BitmapTool.saveBitmap( mWebView.favicon )!!
+                this.bitmapPath = if (mWebView.favicon == null) "" else {
+                    BitmapTool.saveBitmap(mWebView.favicon)!!
                 }
                 this.category = Item.FAVOUR
                 this
             })
-            info( String.format( "insert into item success, id is %d", id ) )
-            toast( "add bookmark success" )
+            info(String.format("insert into item success, id is %d", id))
+            toast("add bookmark success")
         }
     }
 
     fun savepage(){
         val filename:String = mWebView.title
         val url:String = mWebView.url
-        val file_path:String = activity.filesDir.toString()+"/"+filename+".mht"
+        val file_path:String = activity.filesDir.toString()+"/"+filename+".mnt"
         mWebView.saveWebArchive(file_path,false, object :ValueCallback<String>
         {
             override fun onReceiveValue(p0: String?) {
-                if(p0==null)
-                {
+                if (p0 == null) {
+                    Log.i("ZXJ", "savepage failed")
                     toast("离线网页保存失败!")
-                }
-                else
-                {
+                } else {
                     AppDatabase.withAppDatabase { db ->
-                        db.getItemDao().insert( with( Item.getDefault() ) {
+                        db.getItemDao().insert(with(Item.getDefault()) {
                             this.bitmapPath = file_path
                             this.title = filename
                             this.url = url
@@ -208,6 +207,7 @@ class WebFragment : Fragment(){
                             this
                         })
                     }
+                    Log.i("ZXJ", "savepage success")
                 }
             }
         })
