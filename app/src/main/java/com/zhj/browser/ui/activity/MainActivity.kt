@@ -43,7 +43,7 @@ class MainActivity : FragmentActivity() {
         startSearchView.setOnClickListener {
             val searchView = SearchPopup(this)
             searchView.onSearchStart = {word ->
-                if(word.matches("""^(http(s)?://)?(www\.)?[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+(:\d+)*(/\w+\.\w+)*/?$""".toRegex())){
+                if(word.matches("""^(http(s)?://)?(www\.)?(([a-zA-Z0-9\._-]+\.[a-zA-Z]{2,6})|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,4})*(/[a-zA-Z0-9\&%_\./-~-]*)?""".toRegex())){
                     if(!word.startsWith("http"))
                         webViewModel.currentUrl.value = "http://$word"
                     else
