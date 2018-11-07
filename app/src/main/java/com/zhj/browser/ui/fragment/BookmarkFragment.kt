@@ -50,7 +50,7 @@ class BookmarkFragment : Fragment(){
         folderListView.visibility = View.GONE
         favParent.visibility = View.VISIBLE
         AppDatabase.withAppDatabase { db ->
-            val itemArray = db.getItemDao().queryByCategory( Item.FAVOUR )
+            val itemArray = db.getItemDao().queryBookmarkByCategory(folder.category)
             val adapter = BookmarkAdapter(activity!!,itemArray.toMutableList())
             adapter.onItemClick = {item ->
                 val intent = Intent()

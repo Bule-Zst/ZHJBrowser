@@ -9,6 +9,13 @@
 
     <EditText
         android:id="@+id/titleEditText"
+        android:hint="title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/categoryEditText"
+        android:hint="分类"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
