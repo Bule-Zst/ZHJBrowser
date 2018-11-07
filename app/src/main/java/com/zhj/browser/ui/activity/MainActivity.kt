@@ -43,16 +43,6 @@ class MainActivity : FragmentActivity() {
 
         startSearchView.setOnClickListener {
             val searchView = SearchPopup(this)
-            searchView.onSearchStart = {word ->
-                if(word.matches("""^(http(s)?://)?(www\.)?[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+(:\d+)*(/\w+\.\w+)*/?$""".toRegex())){
-                    if(!word.startsWith("http"))
-                        webViewModel.currentUrl.value = "http://$word"
-                    else
-                        webViewModel.currentUrl.value = word
-                }else if(word.isNotBlank()){
-                    webViewModel.currentSearch.value = word
-                }
-            }
             searchView.showAtLocation(mainActivityLayout,Gravity.TOP or Gravity.START,0,0)
 
             goBackBtn.setOnClickListener {
@@ -96,14 +86,8 @@ class MainActivity : FragmentActivity() {
     private fun toggleFullScreen(){
         Global.isFullScreen = !Global.isFullScreen
         val lp = webViewContainer.layoutParams as CoordinatorLayout.LayoutParams
-        if(Global.isFullScreen){
-            lp.bottomMargin = 0
-            mainMenuContainer.visibility = View.GONE
-            OpenPreference.put(PreferenceDict.isFullScreen,true)
-        }else{
-            lp.bottomMargin = dip(48)
-            mainMenuContainer.visibility = View.VISIBLE
-            OpenPreference.put(PreferenceDict.isFullScreen,true)
+        if(isFullScreen){
+
         }
         webViewContainer.layoutParams = lp
     }
