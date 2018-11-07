@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.zhj.browser.R
+import com.zhj.browser.common.info
 import com.zhj.browser.database.AppDatabase
 import com.zhj.browser.database.Item
 import com.zhj.browser.ui.dialog.EditFavDialog
@@ -59,6 +60,19 @@ class BookmarkAdapter(val ctx: Context, var itemList: MutableList<Item>) : Recyc
                 }
                 dialog.show()
                 return@setOnLongClickListener true
+            }
+        }
+
+        private fun updateFavourCategoty( db: AppDatabase ) {
+            val list = db.getFavoutCategoryDao().queryAll()
+            info( list.size.toString() )
+            for( fav in list ) {
+                info( fav.category )
+                val size = db.getItemDao().queryBookmarkByCategory( fav.category ).size
+                info( size.toString() )
+                if( size == 0 ) {
+                    db.getFavoutCategoryDao().delete( fav )
+                }
             }
         }
     }

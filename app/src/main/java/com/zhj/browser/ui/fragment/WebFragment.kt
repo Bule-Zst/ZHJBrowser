@@ -1,5 +1,6 @@
 package com.zhj.browser.ui.fragment
 
+import android.annotation.SuppressLint
 import android.app.Fragment
 import android.arch.lifecycle.ViewModelProviders
 import android.graphics.Bitmap
@@ -11,7 +12,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.tencent.smtt.export.external.interfaces.SslError
+import com.tencent.smtt.export.external.interfaces.SslErrorHandler
+import com.tencent.smtt.export.external.interfaces.WebResourceRequest
 import com.tencent.smtt.sdk.ValueCallback
+import com.tencent.smtt.sdk.WebSettings
 import com.tencent.smtt.sdk.WebView
 import com.tencent.smtt.sdk.WebViewClient
 import com.zhj.browser.R
@@ -35,7 +40,19 @@ class WebFragment : Fragment() {
         webViewModel = ViewModelProviders.of(activity as FragmentActivity).get(WebViewModel::class.java)
         startObserve()
         addListen()
+        changeSetting()
         mWebView.loadUrl("https://www.baidu.com/")
+    }
+
+    @SuppressLint("SetJavaScriptEnabled")
+    private fun changeSetting() {
+        var webSettings = mWebView.settings
+
+        webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+
+        webSettings.javaScriptEnabled = true
+
+        webSettings.domStorageEnabled = true
     }
 
     private fun startObserve() {
@@ -99,6 +116,7 @@ class WebFragment : Fragment() {
     private fun openAdaptiveMode() {
         val settings = mWebView.settings
         settings.loadWithOverviewMode = true
+        settings.layoutAlgorithm = WebSettings.LayoutAlgorithm.SINGLE_COLUMN;
         toast("adaptive mode is opend")
     }
 
@@ -162,7 +180,11 @@ class WebFragment : Fragment() {
             override fun shouldOverrideUrlLoading(p0: WebView?, p1: String?): Boolean {
                 if_load = false
                 return super.shouldOverrideUrlLoading(p0, p1)
+            }
 
+            override fun onReceivedSslError(p0: WebView, p1: SslErrorHandler, p2: SslError) {
+//                super.onReceivedSslError(p0, p1, p2)
+                p1.proceed()
             }
         }
     }
