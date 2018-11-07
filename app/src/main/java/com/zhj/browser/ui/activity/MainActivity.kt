@@ -5,7 +5,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.support.design.widget.CoordinatorLayout
 import android.support.v4.app.FragmentActivity
@@ -56,7 +55,6 @@ class MainActivity : FragmentActivity() {
             searchView.showAtLocation(mainActivityLayout,Gravity.TOP or Gravity.START,0,0)
 
             goBackBtn.setOnClickListener {
-                println("==============go back===========")
                 webViewModel.action.value = WebViewModel.ACTION_BACK
             }
             goForwardBtn.setOnClickListener {
@@ -69,6 +67,8 @@ class MainActivity : FragmentActivity() {
                 webViewModel.action.value = WebViewModel.ACTION_SYNC
             }
         }
+
+        webViewContainer.post { toggleFullScreen(Global.isFullScreen) }
 
         toolMenu.setOnClickListener {
             showToolMenu()
@@ -93,8 +93,8 @@ class MainActivity : FragmentActivity() {
         registerReceiver(openUrlReceiver,intentFilter)
     }
 
-    private fun toggleFullScreen(){
-        Global.isFullScreen = !Global.isFullScreen
+    private fun toggleFullScreen(isFS : Boolean){
+        Global.isFullScreen = isFS
         val lp = webViewContainer.layoutParams as CoordinatorLayout.LayoutParams
         if(Global.isFullScreen){
             lp.bottomMargin = 0
@@ -103,7 +103,7 @@ class MainActivity : FragmentActivity() {
         }else{
             lp.bottomMargin = dip(48)
             mainMenuContainer.visibility = View.VISIBLE
-            OpenPreference.put(PreferenceDict.isFullScreen,true)
+            OpenPreference.put(PreferenceDict.isFullScreen,false)
         }
         webViewContainer.layoutParams = lp
     }
@@ -113,7 +113,7 @@ class MainActivity : FragmentActivity() {
             when(tag){
                 "collection" -> {startActivity<FavActivity>()}
                 "fav" -> {webViewModel.action.value = WebViewModel.ACTION_FAVORITE}
-                "fullScreen" -> {toggleFullScreen()}
+                "fullScreen" -> {toggleFullScreen(!Global.isFullScreen)}
                 "update" -> {webViewModel.action.value = WebViewModel.ACTION_SYNC}
                 "save" -> {webViewModel.action.value = WebViewModel.ACTION_SAVE}
                 "noImage" -> {
