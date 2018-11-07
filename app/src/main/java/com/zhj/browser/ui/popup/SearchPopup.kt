@@ -68,6 +68,7 @@ class SearchPopup(a : Activity) : PopupWindow(a) {
                 val urlFrag = editable?.toString() ?: return
                 AppDatabase.withAppDatabase { db ->
                     //todo : load match url
+                    val list = db.getMatchUrlDao().queryByInput( urlFrag )
                 }
             }
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit

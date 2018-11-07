@@ -14,4 +14,6 @@ interface MatchUrlDao {
     fun queryAll(): List<MatchUrl>
     @Delete
     fun deleteById( matchUrl: MatchUrl )
+    @Query( "select * from `match` where url like '%'||:find||'%'")
+    fun queryByInput( find: String ) : List<MatchUrl>
 }
