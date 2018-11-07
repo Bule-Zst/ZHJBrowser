@@ -67,8 +67,11 @@ class SearchPopup(a : Activity) : PopupWindow(a) {
             override fun afterTextChanged(editable : Editable?) {
                 val urlFrag = editable?.toString() ?: return
                 AppDatabase.withAppDatabase { db ->
-                    //todo : load match url
                     val list = db.getMatchUrlDao().queryByInput( urlFrag )
+                    if(list.isNotEmpty()){
+                        adapter.matchList = list
+                        adapter.notifyDataSetChanged()
+                    }
                 }
             }
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
