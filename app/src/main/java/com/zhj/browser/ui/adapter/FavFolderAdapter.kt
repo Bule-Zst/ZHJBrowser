@@ -9,7 +9,6 @@ import android.widget.TextView
 import com.zhj.browser.R
 import com.zhj.browser.database.AppDatabase
 import com.zhj.browser.database.FavourCategory
-import com.zhj.browser.ui.dialog.EditFavDialog
 import org.jetbrains.anko.find
 
 class FavFolderAdapter(private val c: Context, private val folderList: MutableList<FavourCategory>) : RecyclerView.Adapter<FavFolderAdapter.FavFolderHolder>(){
@@ -33,22 +32,11 @@ class FavFolderAdapter(private val c: Context, private val folderList: MutableLi
                 onFolderClick(folderList[adapterPosition])
             }
             view.setOnLongClickListener {
-                val dialog = EditFavDialog(c,folderList[adapterPosition].category)
-                dialog.onDelete = {
-                    AppDatabase.withAppDatabase { db ->
-                        db.getFavoutCategoryDao().delete(folderList[adapterPosition])
-                        folderList.removeAt(adapterPosition)
-                        notifyItemRemoved(adapterPosition)
-                    }
+                AppDatabase.withAppDatabase { db ->
+                    db.getFavoutCategoryDao().delete(folderList[adapterPosition])
+                    folderList.removeAt(adapterPosition)
+                    notifyItemRemoved(adapterPosition)
                 }
-                dialog.onFinish = {newStr ->
-                    AppDatabase.withAppDatabase { db ->
-                        db.getFavoutCategoryDao().delete(folderList[adapterPosition])
-                        folderList.removeAt(adapterPosition)
-                        notifyItemRemoved(adapterPosition)
-                    }
-                }
-                dialog.show()
                 return@setOnLongClickListener true
             }
         }

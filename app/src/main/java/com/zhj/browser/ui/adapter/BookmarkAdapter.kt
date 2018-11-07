@@ -8,16 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import com.squareup.picasso.Picasso
 import com.zhj.browser.R
 import com.zhj.browser.database.AppDatabase
 import com.zhj.browser.database.Item
-import org.jetbrains.anko.alert
-import org.jetbrains.anko.cancelButton
+import com.zhj.browser.ui.dialog.EditFavDialog
 import org.jetbrains.anko.find
-import org.jetbrains.anko.yesButton
 
-class BookmarkAdapter(val ctx: Context, val itemList: MutableList<Item>) : RecyclerView.Adapter<BookmarkAdapter.WebRecordHolder>() {
+class BookmarkAdapter(val ctx: Context, var itemList: MutableList<Item>) : RecyclerView.Adapter<BookmarkAdapter.WebRecordHolder>() {
 
     var onItemClick : (item : Item) -> Unit = {}
 
@@ -31,7 +28,6 @@ class BookmarkAdapter(val ctx: Context, val itemList: MutableList<Item>) : Recyc
         val bean = itemList[position]
         if (bean.bitmapPath.isNotBlank()) {
             holder.iconView.setImageBitmap(BitmapFactory.decodeFile(bean.bitmapPath))
-            //Picasso.get().load(bean.bitmapPath).placeholder(R.mipmap.image).error(R.mipmap.image).into(holder.iconView)
         }
         holder.titleView.text = bean.title
         holder.urlView.text = bean.url
@@ -47,16 +43,21 @@ class BookmarkAdapter(val ctx: Context, val itemList: MutableList<Item>) : Recyc
                 onItemClick(itemList[adapterPosition])
             }
             view.setOnLongClickListener {
-                ctx.alert(ctx.getString(R.string.tp_delete_web_item).replace("[val]",itemList[adapterPosition].title)){
-                    yesButton {_ ->
+                val dialog = EditFavDialog(ctx,itemList[adapterPosition])
+                dialog.onDelete = {
+                    AppDatabase.withAppDatabase{db ->
+                        db.getItemDao().delete(itemList[adapterPosition])
                         itemList.removeAt(adapterPosition)
                         notifyItemRemoved(adapterPosition)
-                        AppDatabase.withAppDatabase{db ->
-                            db.getItemDao().delete(itemList[adapterPosition])
-                        }
                     }
-                    cancelButton {  }
-                }.show()
+                }
+                dialog.onFinish = {result ->
+                    AppDatabase.withAppDatabase {db ->
+                        itemList = db.getItemDao().queryBookmarkByCategory(result.favourCategory).toMutableList()
+                        notifyDataSetChanged()
+                    }
+                }
+                dialog.show()
                 return@setOnLongClickListener true
             }
         }
