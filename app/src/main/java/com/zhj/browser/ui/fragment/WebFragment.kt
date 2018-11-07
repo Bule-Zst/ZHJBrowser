@@ -3,7 +3,9 @@ package com.zhj.browser.ui.fragment
 import android.annotation.SuppressLint
 import android.app.Fragment
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.support.annotation.RequiresApi
@@ -12,6 +14,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.tencent.smtt.export.external.interfaces.SslError
 import com.tencent.smtt.export.external.interfaces.SslErrorHandler
 import com.tencent.smtt.export.external.interfaces.WebResourceRequest
@@ -177,9 +180,22 @@ class WebFragment : Fragment() {
                 if_load = true
             }
 
-            override fun shouldOverrideUrlLoading(p0: WebView?, p1: String?): Boolean {
+            override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
                 if_load = false
-                return super.shouldOverrideUrlLoading(p0, p1)
+
+                if (!url.startsWith("http")) {
+                    try {
+                        // 以下固定写法
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                        startActivity(intent);
+                    } catch (e : Exception ) {
+                        // 防止没有安装的情况
+                        e.printStackTrace()
+                    }
+                    return true;
+                }
+                return false;
             }
 
             override fun onReceivedSslError(p0: WebView, p1: SslErrorHandler, p2: SslError) {
