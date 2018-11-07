@@ -13,16 +13,14 @@ class TestActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView( R.layout.activity_main )
 
-        AppDatabase.withAppDatabase { db ->
-            db.getMatchUrlDao().insert( with( MatchUrl.getDefault() ) {
-                this.url = "hahazxj"
+        AppDatabase.withAppDatabase { db->
+            db.getItemDao().insert( with( Item.getDefault() ) {
+                this.favourCategory = "未分类"
+                this.category = Item.FAVOUR
                 this
             })
-            val list = db.getMatchUrlDao().queryByInput( "zxj" )
-            info( list.size.toString() )
-            for( l in list ) {
-                info( l.url )
-            }
+            val res = db.getItemDao().queryBookmarkByCategory( "未分类" ).toMsg()
+            info( res )
         }
     }
 }
