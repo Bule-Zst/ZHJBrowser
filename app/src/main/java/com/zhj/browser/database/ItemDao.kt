@@ -8,8 +8,9 @@ import android.arch.persistence.room.Query
 @Dao
 interface ItemDao {
 //    插入
+//    返回值为插入的id
     @Insert
-    fun insert(item: Item )
+    fun insert(item: Item ) : Long
 
 //    删除
     @Delete
@@ -20,12 +21,12 @@ interface ItemDao {
 
 //    获取最多50条数据
     @Query( "select * from item order by id limit 50" )
-    fun queryPart() : Array<Item>
+    fun queryPart() : List<Item>
 
 //    获取全部数据
     @Query( "select * from item order by id" )
-    fun queryAll() : Array<Item>
+    fun queryAll() : List<Item>
 
     @Query( "select * from item where category = :category order by id desc " )
-    fun queryByCategory( category: Int ) : Array<Item>
+    fun queryByCategory( category: Int ) : List<Item>
 }

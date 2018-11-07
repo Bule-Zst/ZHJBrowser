@@ -1,6 +1,7 @@
 package com.zhj.browser.ui.adapter
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -9,9 +10,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.zhj.browser.R
 import com.zhj.browser.bean.WebToolMenuItem
+import com.zhj.browser.tool.obtainColor
 import org.jetbrains.anko.find
 
-class WebToolMenuAdapter(val c: Context, val menuList: List<WebToolMenuItem>) : RecyclerView.Adapter<WebToolMenuAdapter.WebToolMenuHolder>(){
+class WebToolMenuAdapter(val c: Context, val menuList: List<WebToolMenuItem>,val needTint : List<Boolean>) : RecyclerView.Adapter<WebToolMenuAdapter.WebToolMenuHolder>(){
 
     var onItemClick : (tag : String) -> Unit = {}
 
@@ -25,6 +27,9 @@ class WebToolMenuAdapter(val c: Context, val menuList: List<WebToolMenuItem>) : 
         val bean = menuList[position]
         holder.iconView.setImageResource(bean.icon)
         holder.titleView.text = bean.title
+        if(needTint[position]){
+            holder.iconView.imageTintList = ColorStateList.valueOf(c.obtainColor(R.color.menuBlue))
+        }
     }
 
     inner class WebToolMenuHolder(view : View) : RecyclerView.ViewHolder(view){

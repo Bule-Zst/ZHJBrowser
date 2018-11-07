@@ -16,5 +16,8 @@ class WebViewModel : ViewModel(){
 
     val action = MutableLiveData<String>()
     val isNoImgMode = MutableLiveData<Boolean>()
+    val isAdaptive = MutableLiveData<Boolean>()
+    val currentSearch = MutableLiveData<String>()
     val currentUrl = MutableLiveData<String>()
+    val currentPath = MutableLiveData<String>()
 }
