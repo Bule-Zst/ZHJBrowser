@@ -1,9 +1,6 @@
 package com.zhj.browser.database
 
-import android.arch.persistence.room.Dao
-import android.arch.persistence.room.Delete
-import android.arch.persistence.room.Insert
-import android.arch.persistence.room.Query
+import android.arch.persistence.room.*
 
 @Dao
 interface ItemDao {
@@ -29,4 +26,7 @@ interface ItemDao {
 
     @Query( "select * from item where category = :category order by id desc " )
     fun queryByCategory( category: Int ) : List<Item>
+
+    @Update
+    fun update( item: Item )
 }

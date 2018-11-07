@@ -16,10 +16,7 @@ import com.tencent.smtt.sdk.WebView
 import com.tencent.smtt.sdk.WebViewClient
 import com.zhj.browser.R
 import com.zhj.browser.common.info
-import com.zhj.browser.database.AppDatabase
-import com.zhj.browser.database.Item
-import com.zhj.browser.database.MatchUrl
-import com.zhj.browser.database.MatchUrlDao
+import com.zhj.browser.database.*
 import com.zhj.browser.tool.BitmapTool
 import com.zhj.browser.ui.viewModel.WebViewModel
 import kotlinx.android.synthetic.main.fragment_web.*
@@ -180,10 +177,16 @@ class WebFragment : Fragment() {
                     BitmapTool.saveBitmap(mWebView.favicon)!!
                 }
                 this.category = Item.FAVOUR
+                this.favourCategory = "未分类"
                 this
             })
             info(String.format("insert into item success, id is %d", id))
             toast("add bookmark success")
+
+            with( FavourCategory.getDefault() ) {
+                this.category = "未分类"
+                this
+            }.insert()
         }
     }
 
