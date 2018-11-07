@@ -27,6 +27,9 @@ interface ItemDao {
     @Query( "select * from item where category = :category order by id desc " )
     fun queryByCategory( category: Int ) : List<Item>
 
+    @Query( "select * from item where category = 0 and favourCategory = :favourCategory")
+    fun queryBookmarkByCategory( favourCategory: String ) : List<Item>
+
     @Update
     fun update( item: Item )
 }
