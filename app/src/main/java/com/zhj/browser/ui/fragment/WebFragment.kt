@@ -199,7 +199,7 @@ class WebFragment : Fragment() {
             override fun onReceiveValue(p0: String?) {
                 if (p0 == null) {
                     Log.i("ZXJ", "savepage failed")
-                    toast("离线网页保存失败!")
+                    toast("Savepage failed!")
                 } else {
                     AppDatabase.withAppDatabase { db ->
                         db.getItemDao().insert(with(Item.getDefault()) {
@@ -210,6 +210,7 @@ class WebFragment : Fragment() {
                             this
                         })
                     }
+                    toast("Savepage succeed!")
                     Log.i("ZXJ", "savepage success")
                 }
             }
