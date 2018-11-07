@@ -14,11 +14,12 @@ data class Item(
         var title: String,
         var url: String,
 //        类别：收藏夹(0)、历史记录(1)
-        var category: Int
+        var category: Int,
+        var favourCategory: String
 ) {
     companion object {
         fun getDefault() : com.zhj.browser.database.Item {
-            return Item( 0, "", "", "", 0 )
+            return Item( 0, "", "", "", 0, "" )
         }
 //        类别常量
         val FAVOUR = 0
