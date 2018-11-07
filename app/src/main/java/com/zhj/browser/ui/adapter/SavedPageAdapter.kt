@@ -1,12 +1,10 @@
 package com.zhj.browser.ui.adapter
 
 import android.content.Context
-import android.graphics.BitmapFactory
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import com.zhj.browser.R
 import com.zhj.browser.database.AppDatabase
@@ -28,15 +26,11 @@ class SavedPageAdapter(val ctx: Context, val itemList: MutableList<Item>) : Recy
 
     override fun onBindViewHolder(holder: WebRecordHolder, position: Int) {
         val bean = itemList[position]
-        if (bean.bitmapPath.isNotBlank()) {
-            holder.iconView.setImageBitmap(BitmapFactory.decodeFile(bean.bitmapPath))
-        }
         holder.titleView.text = bean.title
         holder.urlView.text = bean.url
     }
 
     inner class WebRecordHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val iconView = view.find<ImageView>(R.id.webIconView)
         val titleView = view.find<TextView>(R.id.webTitleView)
         val urlView = view.find<TextView>(R.id.webUrlView)
 
@@ -54,7 +48,7 @@ class SavedPageAdapter(val ctx: Context, val itemList: MutableList<Item>) : Recy
                         }
                     }
                     cancelButton {  }
-                }
+                }.show()
                 return@setOnLongClickListener true
             }
         }
