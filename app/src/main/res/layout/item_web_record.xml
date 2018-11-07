@@ -8,7 +8,7 @@
 
     <ImageView
         android:id="@+id/webIconView"
-        android:src="@mipmap/image"
+        android:src="@drawable/ic_description"
         android:layout_margin="8dp"
         android:scaleType="centerCrop"
         android:layout_width="32dp"

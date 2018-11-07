@@ -56,7 +56,7 @@ class BookmarkAdapter(val ctx: Context, val itemList: MutableList<Item>) : Recyc
                         }
                     }
                     cancelButton {  }
-                }
+                }.show()
                 return@setOnLongClickListener true
             }
         }

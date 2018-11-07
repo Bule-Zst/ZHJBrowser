@@ -10,13 +10,16 @@ import com.zhj.browser.R
 import com.zhj.browser.common.IntentDict
 import com.zhj.browser.common.info
 import com.zhj.browser.database.AppDatabase
+import com.zhj.browser.database.FavourCategory
 import com.zhj.browser.database.Item
-import com.zhj.browser.ui.activity.MainActivity
 import com.zhj.browser.ui.adapter.BookmarkAdapter
+import com.zhj.browser.ui.adapter.FavFolderAdapter
 import kotlinx.android.synthetic.main.fragment_bookmark.*
-import org.jetbrains.anko.intentFor
 
 class BookmarkFragment : Fragment(){
+
+    private var currentFolder = "root"
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val view = inflater.inflate(R.layout.fragment_bookmark,container,false)
         return view
@@ -24,9 +27,30 @@ class BookmarkFragment : Fragment(){
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        initUI()
+        initFolder()
+    }
+
+    private fun initUI(){
+        returnFolderBtn.setOnClickListener { returnFolder() }
+    }
+
+    private fun initFolder(){
+        AppDatabase.withAppDatabase { db ->
+            val folderList = db.getFavoutCategoryDao().queryAll()
+            val folderAdater = FavFolderAdapter(activity!!,folderList.toMutableList())
+            folderAdater.onFolderClick = {folder ->
+                openFolder(folder)
+            }
+            folderListView.adapter = folderAdater
+        }
+    }
+
+    private fun openFolder(folder : FavourCategory){
+        folderListView.visibility = View.GONE
+        favParent.visibility = View.VISIBLE
         AppDatabase.withAppDatabase { db ->
             val itemArray = db.getItemDao().queryByCategory( Item.FAVOUR )
-            info( itemArray.size.toString() )
             val adapter = BookmarkAdapter(activity!!,itemArray.toMutableList())
             adapter.onItemClick = {item ->
                 val intent = Intent()
@@ -37,5 +61,10 @@ class BookmarkFragment : Fragment(){
             }
             bookmarkListView.adapter = adapter
         }
+    }
+
+    private fun returnFolder(){
+        favParent.visibility = View.GONE
+        folderListView.visibility = View.VISIBLE
     }
 }
