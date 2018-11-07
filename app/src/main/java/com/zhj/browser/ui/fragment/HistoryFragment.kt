@@ -12,6 +12,7 @@ import com.zhj.browser.database.AppDatabase
 import com.zhj.browser.database.Item
 import com.zhj.browser.ui.activity.MainActivity
 import com.zhj.browser.ui.adapter.BookmarkAdapter
+import com.zhj.browser.ui.adapter.HistoryAdapter
 import kotlinx.android.synthetic.main.fragment_history.*
 import org.jetbrains.anko.intentFor
 
@@ -25,7 +26,7 @@ class HistoryFragment : Fragment(){
         super.onActivityCreated(savedInstanceState)
         AppDatabase.withAppDatabase { db ->
             val itemList = db.getItemDao().queryByCategory( Item.HISTORY )
-            val adapter = BookmarkAdapter(activity!!,itemList.toMutableList())
+            val adapter = HistoryAdapter(activity!!,itemList.toMutableList())
             adapter.onItemClick = {item ->
                 val intent = Intent()
                 intent.action = IntentDict.ACTION_SEARCH_URL

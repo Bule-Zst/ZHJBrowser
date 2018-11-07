@@ -19,6 +19,7 @@ import kotlinx.android.synthetic.main.fragment_bookmark.*
 class BookmarkFragment : Fragment(){
 
     private var currentFolder = "root"
+    private lateinit var folderAdapter : FavFolderAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val view = inflater.inflate(R.layout.fragment_bookmark,container,false)
@@ -38,11 +39,11 @@ class BookmarkFragment : Fragment(){
     private fun initFolder(){
         AppDatabase.withAppDatabase { db ->
             val folderList = db.getFavoutCategoryDao().queryAll()
-            val folderAdater = FavFolderAdapter(activity!!,folderList.toMutableList())
-            folderAdater.onFolderClick = {folder ->
+            folderAdapter = FavFolderAdapter(activity!!,folderList.toMutableList())
+            folderAdapter.onFolderClick = {folder ->
                 openFolder(folder)
             }
-            folderListView.adapter = folderAdater
+            folderListView.adapter = folderAdapter
         }
     }
 
@@ -66,5 +67,10 @@ class BookmarkFragment : Fragment(){
     private fun returnFolder(){
         favParent.visibility = View.GONE
         folderListView.visibility = View.VISIBLE
+        AppDatabase.withAppDatabase { db ->
+            val folderList = db.getFavoutCategoryDao().queryAll()
+            folderAdapter.folderList = folderList.toMutableList()
+            folderAdapter.notifyDataSetChanged()
+        }
     }
 }
