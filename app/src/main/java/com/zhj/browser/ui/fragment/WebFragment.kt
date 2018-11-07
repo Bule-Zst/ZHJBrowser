@@ -190,7 +190,7 @@ class WebFragment : Fragment() {
     fun savepage(){
         val filename:String = mWebView.title
         val url:String = mWebView.url
-        val file_path:String = activity.filesDir.toString()+"/"+filename+".mnt"
+        val file_path:String = activity.filesDir.toString()+"/"+filename+".mht"
         mWebView.saveWebArchive(file_path,false, object :ValueCallback<String>
         {
             override fun onReceiveValue(p0: String?) {
