@@ -14,13 +14,8 @@ class TestActivity : Activity() {
         setContentView( R.layout.activity_main )
 
         AppDatabase.withAppDatabase { db->
-            db.getItemDao().insert( with( Item.getDefault() ) {
-                this.favourCategory = "未分类"
-                this.category = Item.FAVOUR
-                this
-            })
-            val res = db.getItemDao().queryBookmarkByCategory( "未分类" ).toMsg()
-            info( res )
+            val cate = db.getItemDao().queryFavourCategoryById( 3 )
+            info( cate )
         }
     }
 }
