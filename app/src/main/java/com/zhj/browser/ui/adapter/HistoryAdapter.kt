@@ -1,20 +1,23 @@
 package com.zhj.browser.ui.adapter
 
 import android.content.Context
+import android.graphics.BitmapFactory
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import com.zhj.browser.R
 import com.zhj.browser.database.AppDatabase
 import com.zhj.browser.database.Item
+import com.zhj.browser.ui.dialog.EditFavDialog
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.cancelButton
 import org.jetbrains.anko.find
 import org.jetbrains.anko.yesButton
 
-class SavedPageAdapter(val ctx: Context, val itemList: MutableList<Item>) : RecyclerView.Adapter<SavedPageAdapter.WebRecordHolder>() {
+class HistoryAdapter(val ctx: Context, var itemList: MutableList<Item>) : RecyclerView.Adapter<HistoryAdapter.WebRecordHolder>() {
 
     var onItemClick : (item : Item) -> Unit = {}
 
@@ -26,11 +29,15 @@ class SavedPageAdapter(val ctx: Context, val itemList: MutableList<Item>) : Recy
 
     override fun onBindViewHolder(holder: WebRecordHolder, position: Int) {
         val bean = itemList[position]
+        if (bean.bitmapPath.isNotBlank()) {
+            holder.iconView.setImageBitmap(BitmapFactory.decodeFile(bean.bitmapPath))
+        }
         holder.titleView.text = bean.title
         holder.urlView.text = bean.url
     }
 
     inner class WebRecordHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val iconView = view.find<ImageView>(R.id.webIconView)
         val titleView = view.find<TextView>(R.id.webTitleView)
         val urlView = view.find<TextView>(R.id.webUrlView)
 
@@ -39,16 +46,17 @@ class SavedPageAdapter(val ctx: Context, val itemList: MutableList<Item>) : Recy
                 onItemClick(itemList[adapterPosition])
             }
             view.setOnLongClickListener {
-                ctx.alert(ctx.getString(R.string.tp_delete_web_item).replace("[val]",itemList[adapterPosition].title)){
-                    yesButton {_ ->
-                        AppDatabase.withAppDatabase{db ->
+                ctx.alert("are you sure want to delete the history"){
+                    yesButton {
+                        AppDatabase.withAppDatabase { db ->
                             db.getItemDao().delete(itemList[adapterPosition])
+                            itemList.removeAt(adapterPosition)
+                            notifyItemRemoved(adapterPosition)
                         }
-                        itemList.removeAt(adapterPosition)
-                        notifyItemRemoved(adapterPosition)
                     }
                     cancelButton {  }
                 }.show()
+
                 return@setOnLongClickListener true
             }
         }

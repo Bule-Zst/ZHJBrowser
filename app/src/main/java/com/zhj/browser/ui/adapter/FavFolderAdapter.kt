@@ -11,7 +11,7 @@ import com.zhj.browser.database.AppDatabase
 import com.zhj.browser.database.FavourCategory
 import org.jetbrains.anko.find
 
-class FavFolderAdapter(private val c: Context, private val folderList: MutableList<FavourCategory>) : RecyclerView.Adapter<FavFolderAdapter.FavFolderHolder>(){
+class FavFolderAdapter(private val c: Context, var folderList: MutableList<FavourCategory>) : RecyclerView.Adapter<FavFolderAdapter.FavFolderHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavFolderHolder {
         return FavFolderHolder(LayoutInflater.from(c).inflate(R.layout.item_fav_category,parent,false))
